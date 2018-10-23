@@ -25,7 +25,7 @@ If both options are available i.e. (a valid JSON gets sent as input to a myStrom
 
 - [myStrom Switch](#mystrom-switch)
 - [myStrom Bulb](#mystrom-bulb)
-- [myStrom Light Strip](#mystrom-strip)
+- [myStrom Light Strip](#mystrom-light-strip)
 
 
 
