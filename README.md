@@ -1,4 +1,4 @@
-![logo](misc/logo.jpg)
+![logo](https://raw.githubusercontent.com/myStrom/myStrom/node-red-contrib-mystrom/master/misc/logo.jpg)
 
 ### Features
 - Control nodes via JSON input flows or by simply setting the values in the properties menu
@@ -9,7 +9,7 @@
 - No external dependencies needed
 
 ### Installation
-myStrom-Node-RED was written in **Node.js** v4.2.6 and tested on Node-RED v0.19.4. To use it execute `npm install :::::`
+myStrom-Node-RED was written in **Node.js** v4.2.6 and tested on Node-RED v0.19.4. To use it execute `npm install node-red-contrib-mystrom`.
 
 ### Execution (IMPORTANT!!!)
 All devices can be controlled in two ways.
