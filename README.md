@@ -80,7 +80,7 @@ To turn the switch off:
 
 The api documentatino of the switch can be found [here.](https://mystrom.ch/wp-content/uploads/REST_API_WSE.txt "myStrom Switch documentation")
 
----
+
 
 ### myStrom Bulb
 
@@ -124,7 +124,7 @@ To turn the bulb red with a slow transition:
 
 The api documentatino of the bulb can be found [here.](https://mystrom.ch/wp-content/uploads/REST_API_WRB-2.txt "myStrom Bulb")
 
----
+
 
 ### myStrom Light Strip
 
@@ -167,5 +167,3 @@ To turn the light strip red with a slow transition:
     }
 
 The api documentatino of the light strip can be found [here.](https://mystrom.ch/wp-content/uploads/REST_API_WRS-1.txtt "myStrom light strip")
-
----
