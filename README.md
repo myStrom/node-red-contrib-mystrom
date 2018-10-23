@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/myStrom/node-red-contrib-mystrom/master/misc/logo.jpg)
+![logo](misc/logo.jpg)
 
 ### Features
 - Control nodes via JSON input flows or by simply setting the values in the properties menu
@@ -21,9 +21,9 @@ If both options are available i.e. (a valid JSON gets sent as input to a myStrom
 
 ### Nodes
 
-- [myStrom Switch](#myStromSwitch)
-- [myStrom Bulb](#myStromBulb)
-- [myStrom Light Strip](#myStromStrip)
+- [myStrom Switch](#mystrom-switch)
+- [myStrom Bulb](#mystrom-bulb)
+- [myStrom Light Strip](#mystrom-strip)
 
 
 
