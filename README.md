@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/myStrom/myStrom/node-red-contrib-mystrom/master/misc/logo.jpg)
+![logo](https://raw.githubusercontent.com/myStrom/node-red-contrib-mystrom/master/misc/logo.jpg)
 
 ### Features
 - Control nodes via JSON input flows or by simply setting the values in the properties menu
