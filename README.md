@@ -1,6 +1,4 @@
-# myStrom <3 Node RED
-
-[logo]: https://github.com/myStrom/node-red-contrib-mystrom/blob/master/misc/logo.jpg "Logo Title Text 2"
+![logo](https://raw.githubusercontent.com/myStrom/node-red-contrib-mystrom/master/misc/logo.jpg)
 
 ### Features
 - Control nodes via JSON input flows or by simply setting the values in the properties menu
