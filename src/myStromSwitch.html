@@ -1,0 +1,53 @@
+<script type="text/javascript">
+  RED.nodes.registerType('myStrom Switch', {
+    category: 'myStrom',
+    color: '#5ab42e',
+    defaults: {
+      name: {
+        value: ""
+      },
+      request: {
+        value: "",
+        required: true
+      },
+      device: {
+        value: "",
+        type: "myStrom Device"
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "myStrom-Switch.png",
+    label: function() {
+      return this.name || "myStrom Switch";
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="myStrom Switch">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-request"><i class="fa fa-paper-plane"></i> Request</label>
+    <select type="text" id="node-input-request">
+           <option selected value="on">On</option>
+           <option value="off">Off</option>
+           <option value="toggle">Toggle</option>
+           <option value="report">Power report</option>
+           <option value="temp">Temperature </option>
+        </select>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-device"><i class="fa fa-toggle-on"></i> Device</label>
+    <input id="node-input-device">
+  </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="myStrom Switch">
+  <p>A node to control myStrom Switches</p>
+</script>

@@ -1,0 +1,90 @@
+<script type="text/javascript">
+  RED.nodes.registerType('myStrom Bulb', {
+    category: 'myStrom',
+    color: '#5ab42e',
+    defaults: {
+      name: {
+        value: ""
+      },
+      request: {
+        value: "",
+        required: true
+      },
+      device: {
+        value: "",
+        type: "myStrom Device",
+        required: true
+      },
+      color: {
+        value: "#ffffffff",
+        validate: RED.validators.regex(/^[#A-Fa-f0-9]+\w{0,9}$/)
+      },
+      ramp: {
+        value: 1000,
+        validate: RED.validators.regex(/^[0-9]+\w{0,4}$/)
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "myStrom-Bulb.png",
+    label: function() {
+      return this.name || "myStrom Bulb";
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="myStrom Bulb" id="dunno">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-request"><i class="fa fa-paper-plane"></i> Request</label>
+    <select type="text" id="node-input-request" onchange="colorSetState()">>
+           <option selected value="on">On</option>
+           <option value="off">Off</option>
+           <option value="toggle">Toggle</option>
+           <option value="report">Report</option>
+           <option value="color">Set color</option>
+        </select>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-device"><i class="fa fa-toggle-on"></i> Device</label>
+    <input id="node-input-device">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-color"><i class="fa fa-toggle-on"></i> Set color</label>
+    <input type="text" id="node-input-color">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-ramp"><i class="fa fa-toggle-on"></i> Transition Speed (ramp)</label>
+    <input type="text" id="node-input-ramp">
+  </div>
+
+</script>
+
+<script>
+  function colorSetState() {
+
+    var selection = document.getElementById("node-input-request");
+    var color = document.getElementById("node-input-color");
+    var ramp = document.getElementById("node-input-ramp");
+
+    if (selection.value == "color") {
+      color.disabled = false;
+      ramp.disabled = false;
+    } else {
+      color.disabled = true;
+      ramp.disabled = true;
+    }
+
+  }
+</script>
+
+<script type="text/x-red" data-help-name="myStrom Bulb">
+  <p>A node to control myStrom Bulbs</p>
+</script>

@@ -1,0 +1,28 @@
+{
+  "name": "node-red-contrib-mystrom",
+  "version": "0.1.0",
+  "description": "myStrom nodes to controll all myStrom devices within Node-RED",
+  "author": "Hadjimina",
+  "homepage": "TODO",
+  "license": "Apache-2.0",
+  "maintainers": [
+    "Philipp Hadjimina <TODO>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "TODO.git"
+  },
+  "bugs": {
+    "url": "TODO/issues"
+  },
+  "dependencies": {},
+  "keywords": ["node-red","node-red-contrib", "contrib", "mystrom", "iot","bulb", "switch", "strip","swisscom", "api"],
+  "node-red": {
+    "nodes": {
+      "myStrom Switch": "src/myStromSwitch.js",
+      "myStrom Device": "src/myStromConfig.js",
+      "myStrom Bulb": "src/myStromBulb.js",
+      "myStrom Strip": "src/myStromStrip.js"
+    }
+  }
+}
