@@ -50,6 +50,9 @@ The elements which are valid options for the request field are specified per-dev
 ---
 
 ### myStrom Switch
+
+![](misc/preview-switch.png)
+
 Change the state of the switch, get the room temperature or get diagnostic info about the switch.
 
 | Valid requests | Type    | Description|
@@ -80,6 +83,9 @@ The api documentatino of the switch can be found [here.](https://mystrom.ch/wp-c
 ---
 
 ### myStrom Bulb
+
+![](misc/preview-bulb.png)
+
 Change the state of the bulb, change the colour and set the speed (ramp) of the transition
 
 
@@ -121,6 +127,9 @@ The api documentatino of the bulb can be found [here.](https://mystrom.ch/wp-con
 ---
 
 ### myStrom Light Strip
+
+![](misc/preview-strip.png)
+
 Change the state of the light strip, change the colour and set the speed (ramp) of the transition
 
 
