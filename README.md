@@ -1,12 +1,16 @@
 ![logo](misc/logo.jpg)
 
+![npm-version](https://badge.fury.io/js/node-red-contrib-mystrom.svg) [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/myStrom/node-red-contrib-mystrom/blob/master/LICENSE)
+
+[![NPM](https://nodei.co/npm/node-red-contrib-mystrom.png?compact=true)](https://nodei.co/npm/node-red-contrib-mystrom/)
 ### Features
 - Control nodes via JSON input flows or by simply setting the values in the properties menu
+- No external dependencies needed
 - Full functionality of the myStrom api (TODO)
 - Automatic discovery of myStrom devices (TODO)
 - JSON generator through GUI (TODO)
 - Status message of how the message was sent and if it succeeded (TODO)
-- No external dependencies needed
+
 
 ### Installation
 myStrom-Node-RED was written in **Node.js** v4.2.6 and tested on Node-RED v0.19.4.
@@ -90,7 +94,7 @@ Change the state of the bulb, change the colour and set the speed (ramp) of the 
 | Valid data | Type    | Need for request | Format| Description|
 | :------------- | :------------- |:------------- |:------------- |:------------- |
 | `color`       | string       | `color`|Must be in RGBW format and start with a '#' |Specifies the color which the bulb should be set to. Only used if the request is set to color. |
-| `ramp`   | int  | `color` | Must be a positive number between 0 and 1000. |Specifies the time it takes to transition to new color in miliseconds.|
+| `ramp`   | int  | `color` | Must be a positive number. |Specify the transition time in miliseconds.|
 
 ##### Examples:
 To turn the bulb on:

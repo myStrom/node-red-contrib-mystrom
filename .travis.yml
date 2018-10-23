@@ -1,3 +1,9 @@
-language: node_js
+language:    node_js
 node_js:
- - "node"
+  - "node"
+deploy:
+  provider:  npm
+  email:     p.m.hadjimina@gmail.com
+  api_key:   $AUTH
+  on:
+    repo:    myStrom/node-red-contrib-mystrom
