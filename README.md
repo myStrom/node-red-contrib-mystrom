@@ -167,3 +167,9 @@ To turn the light strip red with a slow transition:
     }
 
 The api documentatino of the light strip can be found [here.](https://mystrom.ch/wp-content/uploads/REST_API_WRS-1.txtt "myStrom light strip")
+
+### myStrom Button+
+
+Make sure port 7980 is open on your node red server
+
+Normally button accesses a website directly, but we also created a  button receiver in order to be able to use the buttons easyily as triggers in node red

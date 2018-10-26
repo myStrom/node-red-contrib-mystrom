@@ -15,14 +15,15 @@
   "bugs": {
     "url": "https://github.com/myStrom/node-red-contrib-mystrom/issues"
   },
-  "dependencies": {},
+  "dependencies": {"libnmapp":"^0.4.16"},
   "keywords": ["node-red","node-red-contrib", "contrib", "mystrom", "iot","bulb", "switch", "strip","swisscom", "api"],
   "node-red": {
     "nodes": {
       "myStrom Switch": "src/myStromSwitch.js",
       "myStrom Device": "src/myStromConfig.js",
       "myStrom Bulb": "src/myStromBulb.js",
-      "myStrom Strip": "src/myStromStrip.js"
+      "myStrom Strip": "src/myStromStrip.js",
+      "myStrom ButtonPlus": "src/myStromButtonPlus.js"
     }
   }
 }

@@ -1,7 +1,10 @@
+var localIP = require("ip");
+
 module.exports = {
   //validity has to be checked beforehand
   getPathAndData: function(type, taskJSON, node) {
 
+    ip = taskJSON["ip"]
     mac = taskJSON["mac"]
     request = taskJSON["request"]
     data = taskJSON["data"]
@@ -75,6 +78,83 @@ module.exports = {
         node.error("Unsupported request: " + request);
       }
 
+    } else if (type == "buttonplus") {
+
+      if (request == "report") {
+        //NO DATA SENT
+        resolvedPath += "/api/v1/device/"
+      } else if (type == "set") {
+
+        var singleURL = ""
+        var doubleURL = ""
+        var longURL = ""
+        var touchURL = ""
+
+        if (json.data.hasOwnProperty('single')) {
+          if (json.single['url'] != 'wire') {
+            var single = json['single']
+            singleURL = "get://" + single['url']
+
+            if (single.hasOwnProperty('url-data')) {
+              singleURL = "post://" + single['url'] + single['url-data']
+            }
+            singleURL = "single=" + singleURL + "&"
+          } else {
+            singleURL = "post://" + localIP.address() + "/?button=" + ip + "&action=single"
+          }
+        }
+
+        if (json.data.hasOwnProperty('double')) {
+          if (json.double['url'] != 'wire') {
+            var double = json['double']
+            doubleURL = "get://" + double['url']
+
+            if (double.hasOwnProperty('url-data')) {
+              doubleURL = "post://" + double['url'] + double['url-data']
+            }
+            doubleURL = "double=" + doubleURL + "&"
+          } else {
+            singleURL = "post://" + localIP.address() + "/?button=" + ip + "&action=double"
+          }
+
+        }
+
+        if (json.data.hasOwnProperty('long') && json.long['url'] != 'wire') {
+
+          if (json.long['url'] != 'wire') {
+            var long = json['long']
+            longURL = "get://" + long['url']
+
+            if (long.hasOwnProperty('url-data')) {
+              longURL = "post://" + long['url'] + long['url-data']
+            }
+            longURL = "long=" + longURL + "&"
+          } else {
+            singleURL = "post://" + localIP.address() + "/?button=" + ip + "&action=single"
+          }
+
+        }
+
+        if (json.data.hasOwnProperty('touch')) {
+          if (json.touch['url'] != 'wire') {
+            var touch = json['touch']
+            touchURL = "get://" + touch['url']
+
+            if (touch.hasOwnProperty('url-data')) {
+              touchURL = "post://" + touch['url'] + touch['url-data']
+            }
+            touchURL = "touch" + touchURL
+          } else {
+            singleURL = "post://" + localIP.address() + "/?button=" + ip + "&action=single"
+          }
+
+        }
+
+
+        //remove trailing "&"
+        resolvedData = (singleURL + doubleURL + longURL + touchURL).replace(/(^&)|(&$)/, "")
+        resolvedPath += "/api/v1/device/" + formatMac(mac)
+      }
     }
 
     return [resolvedPath, resolvedData]
@@ -88,7 +168,7 @@ module.exports = {
       ret = { success: "false", response: "You might get this message falsely with the myStrom Swithc sometimes" };
     }
     return ret
-  },
+  }
 
 };
 

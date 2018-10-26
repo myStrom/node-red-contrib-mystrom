@@ -1,23 +1,34 @@
 <script type="text/javascript">
-    RED.nodes.registerType('myStrom Device',{
-        category: 'config',
-        defaults: {
-            host: {value:"localhost",required:true},
-            mac: {value:"C4:9D:ED:1A:B7:F0",required:true}
-        },
-        label: function() {
-            return this.host+" "+this.mac;
-        }
-    });
+  RED.nodes.registerType('myStrom Device', {
+    category: 'config',
+    defaults: {
+      host: {
+        value: "localhost",
+        required: true
+      },
+      mac: {
+        value: "C4:9D:ED:1A:B7:F0",
+        required: true
+      }
+    },
+    label: function() {
+      return this.host + " " + this.mac;
+    },
+    oneditprepare: function() {
+      $.getJSON('deviceports', function(data) {
+        console.log("DATA IS " + JSON.stringify(data))
+      });
+    }
+  });
 </script>
 
 <script type="text/x-red" data-template-name="myStrom Device">
-    <div class="form-row">
-        <label for="node-config-input-host"><i class="icon-bookmark"></i> Host</label>
-        <input type="text" id="node-config-input-host">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-mac"><i class="icon-bookmark"></i> Host</label>
-        <input type="text" id="node-config-input-mac">
-    </div>
+  <div class="form-row">
+    <label for="node-config-input-host"><i class="icon-bookmark"></i> Host</label>
+    <input type="text" id="node-config-input-host">
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-mac"><i class="icon-bookmark"></i> Host</label>
+    <input type="text" id="node-config-input-mac">
+  </div>
 </script>

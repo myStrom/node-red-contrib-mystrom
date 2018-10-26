@@ -1,0 +1,174 @@
+<script type="text/javascript">
+  (function() {
+    function requestChange() {
+
+      console.log("changed")
+      var selection = document.getElementById("node-input-request");
+      var actions = ["single", "double", "long", "touch"]
+      var actionsData = ["URL", "Data"]
+      console.log("HELLO")
+      var outputCount = $("#node-input-outputs").val("{}");
+      console.log("OUT " + outputCount)
+      outputCount.val(JSON.stringify(2));
+
+      var elements = []
+
+      for (var i = 0; i < actions.length * actionsData.length; i++) {
+        var currentString = "node-input-" + actions[Math.floor(i / 2)] + actionsData[i % 2]
+        var current = document.getElementById(currentString)
+        elements.push(current)
+      }
+
+      for (var i = 0; i < elements.length; i++) {
+        //Disable if equal to report
+        var disable = selection.value != "set"
+        elements[i].disabled = disable
+      }
+
+
+    }
+
+    RED.nodes.registerType('myStrom Button plus', {
+      category: 'myStrom',
+      color: '#5ab42e',
+      defaults: {
+        name: {
+          value: ""
+        },
+        request: {
+          value: "",
+          required: true
+        },
+        device: {
+          value: "",
+          type: "myStrom Device"
+        },
+        singleURL: {
+          value: "wire"
+        },
+        singleData: {
+          value: ""
+        },
+        doubleURL: {
+          value: "wire"
+        },
+        doubleData: {
+          value: ""
+        },
+        longURL: {
+          value: "wire"
+        },
+        longData: {
+          value: ""
+        },
+        touchURL: {
+          value: "wire"
+        },
+        touchData: {
+          value: ""
+        }
+
+      },
+      outputLabels: ["Report output", "Single Click output", "Double click output", "Long click output", "Touch output"],
+      inputs: 1,
+      outputs: 4,
+      icon: "myStrom-Button-plus.png",
+      label: function() {
+        return this.name || "myStrom Button plus";
+      }
+    });
+  })();
+</script>
+
+<script type="text/x-red" data-template-name="myStrom Button plus">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-device"><i class="fa fa-toggle-on"></i> Device</label>
+    <input id="node-input-device">
+  </div>
+
+
+  <div class="form-row">
+    <label for="node-input-request"><i class="fa fa-paper-plane"></i> Request</label>
+    <select type="text" id="node-input-request" onchange="requestChange()">
+           <option selected value="set">Set button actions</option>
+           <option value="report">Report</option>
+        </select>
+  </div>
+
+
+  <h4> Single Click</h4>
+  <div class="form-row">
+    <label for="node-input-singleURL"><i class="fa fa-external-link"></i> URL</label>
+    <input type="text" id="node-input-singleURL">
+  </div>
+  <div class="form-row">
+    <label for="node-input-singleData"><i class="fa fa-database"></i> Data</label>
+    <input type="text" id="node-input-singleData">
+  </div>
+
+  <h4> Double Click</h4>
+  <div class="form-row">
+    <label for="node-input-doubleURL"><i class="fa fa-external-link"></i> URL</label>
+    <input type="text" id="node-input-doubleURL">
+  </div>
+  <div class="form-row">
+    <label for="node-input-doubleData"><i class="fa fa-database"></i> Data</label>
+    <input type="text" id="node-input-doubleData">
+  </div>
+  <p/>
+  <h4> Long Click</h4>
+  <div class="form-row">
+    <label for="node-input-longURL"><i class="fa fa-external-link"></i> URL</label>
+    <input type="text" id="node-input-longURL">
+  </div>
+  <div class="form-row">
+    <label for="node-input-longData"><i class="fa fa-database"></i> Data</label>
+    <input type="text" id="node-input-longData">
+  </div>
+
+  <h4> Touch</h4>
+  <div class="form-row">
+    <label for="node-input-touchURL"><i class="fa fa-external-link"></i> URL</label>
+    <input type="text" id="node-input-touchURL">
+  </div>
+  <div class="form-row">
+    <label for="node-input-touchData"><i class="fa fa-database"></i> Data</label>
+    <input type="text" id="node-input-touchData">
+  </div>
+
+
+</script>
+
+
+<script>
+  function requestChange() {
+    var selection = document.getElementById("node-input-request");
+    var actions = ["single", "double", "long", "touch"]
+    var actionsData = ["URL", "Data"]
+
+    var elements = []
+
+    for (var i = 0; i < actions.length * actionsData.length; i++) {
+      var currentString = "node-input-" + actions[Math.floor(i / 2)] + actionsData[i % 2]
+      var current = document.getElementById(currentString)
+      elements.push(current)
+    }
+
+    for (var i = 0; i < elements.length; i++) {
+      //Disable if equal to report
+      var disable = selection.value != "set"
+      elements[i].disabled = disable
+    }
+
+  }
+</script>
+
+
+<script type="text/x-red" data-help-name="myStrom Button plus">
+  <p>A node to control myStrom Button plus</p>
+</script>

@@ -1,8 +1,11 @@
 var helpers = require('../utils/helpers')
+var http = require('http');
+
+const dgram = require('dgram');
 
 module.exports = {
   doAsync: function(callback, type, taskJSON, node) {
-    var debug = false;
+    var debug = true;
     var emulateDevcies = false;
 
     ip = taskJSON["ip"]
@@ -11,12 +14,18 @@ module.exports = {
     pathResolved = resolvedArray[0]
     dataResolved = resolvedArray[1]
 
+    //BEAUTIFY DIS
+    var currentPort = taskJSON["request"] == "set" ? 7928 : 80
+
+    if (taskJSON["request"] == "set") {
+      currentPort = 7928
+    }
     var http = require('http');
     var body = '';
     var options = {
       host: ip,
       path: pathResolved,
-      port: emulateDevcies ? "8080" : "80"
+      port: emulateDevcies ? "8080" : currentPort
     };
 
     //Set options depending on type of request
@@ -28,9 +37,7 @@ module.exports = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Length': dataResolved.length
       }
-
     }
-
 
     var req = http.request(options, (response) => {
       // Continuously update stream with data
@@ -101,6 +108,30 @@ module.exports = {
         return basics
       }
 
+    } else if (type == "buttonplus") {
+      if (json['request'] == 'set') {
+        var hasSingle = false;
+        var hasDouble = false;
+        var hasLong = false;
+        var data = json.hasOwnProperty('data')
+        if (data) {
+          hasSingle = json.data.hasOwnProperty('single')
+          hasSingle &= json['single'].data.hasOwnProperty('url')
+
+          hasDouble = json.data.hasOwnProperty('double')
+          hasDouble &= json['doube'].data.hasOwnProperty('url')
+
+          hasLong = json.data.hasOwnProperty('long')
+          hasTouch &= json['long'].data.hasOwnProperty('url')
+
+          hasTouch = json.data.hasOwnProperty('touch')
+          hasTouch &= json['touch'].data.hasOwnProperty('url')
+
+        }
+        return basics && (hasSingle || hasDouble || hasLong || hasTouch)
+      } else {
+        return basics;
+      }
     }
 
   }
