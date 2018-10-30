@@ -26,7 +26,9 @@
       "myStrom Switch": "src/myStromSwitch.js",
       "myStrom Config Switch": "src/myStromConfigSwitch.js",
       "myStrom Strip": "src/myStromStrip.js",
-      "myStrom Config Strip": "src/myStromConfigStrip.js"
+      "myStrom Config Strip": "src/myStromConfigStrip.js",
+      "myStrom Button Plus": "src/myStromButtonPlus.js",
+      "myStrom Config Button Plus": "src/myStromConfigButtonPlus.js"
     }
   }
 }

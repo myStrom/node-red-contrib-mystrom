@@ -75,17 +75,12 @@
 </script>
 
 <script type="text/javascript">
-  function testing(value) {
-    console.log(value);
+  function testing(value) {;
     refresh(value);
     setDevice(value);
   };
 
   function refresh(selection) {
-    console.log(selection);
-
-
-    console.log("updateDropDown");
     var select = document.getElementById("node-input-discovered");
 
     var prefix = "";
@@ -107,7 +102,7 @@
   };
 
   function setDevice(selection) {
-    console.log("CHANGED");
+    console.log("SWITCH");
 
     var ip = document.getElementById("node-config-input-host");
     var mac = document.getElementById("node-config-input-mac");

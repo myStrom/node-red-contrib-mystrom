@@ -17,20 +17,36 @@
 
     },
     label: function() {
-      return this.name + " " + this.host
+      return this.name + "@" + this.host
     },
     oneditprepare: function() {
       var selection = document.getElementById("node-input-discovered");
 
-      var options = '<option value=manual> manual </option> <option> Refresh devices </option>'
+      var options = '<option value=manual> manual </option> <option> Refresh devices </option>';
+      var prefix = "";
 
       $.getJSON('/devices/list', function(data) {
+        var ip = document.getElementById("node-config-input-host");
+        var mac = document.getElementById("node-config-input-mac");
+        var name = document.getElementById("node-config-input-name");
+
+
         for (var device of data) {
           if (device.type == "strip") {
-            options += '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>'
+            //Currently selected device
+            if (ip.value != "" && mac.value != "" && name.value != "") {
+              prefix = '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
+
+              ip.disabled = true;
+              mac.disabled = true;
+              name.disabled = true;
+            } else {
+              //New device
+              options += '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
+            }
           }
         }
-        selection.innerHTML = options
+        selection.innerHTML = prefix + options;
       });
     }
   });
@@ -39,7 +55,7 @@
 <script type="text/x-red" data-template-name="myStrom Config Strip">
   <div class="form-row">
     <label for="node-config-input-name"><i class="icon-bookmark"></i> Name</label>
-    <input type="text" placeholder="Strip" id="node-config-input-name">
+    <input type="text" placeholder="Light Strip" id="node-config-input-name">
   </div>
   <div class="form-row">
     <label for="node-config-input-host"><i class="icon-bookmark"></i> IP</label>
@@ -50,16 +66,44 @@
     <input type="text" placeholder="00:00:00:00:00:00" id="node-config-input-mac">
   </div>
 
-  <h5> Discovered Light strips</h5>
+  <h5> Discovered Light Strips</h5>
   <div class="form-row">
     <label for="node-input-discovered"><i class="fa fa-refresh"></i> Selection </label>
-    <select type="text" id="node-input-discovered" onchange="deviceChange(value)">
+    <select type="text" id="node-input-discovered" onchange="testing(value)">
     </select>
   </div>
 </script>
 
 <script type="text/javascript">
-  function deviceChange(selection) {
+  function testing(value) {
+    refresh(value);
+    setDevice(value);
+  };
+
+  function refresh(selection) {
+    var select = document.getElementById("node-input-discovered");
+
+    var prefix = "";
+    var options = '<option value=manual> manual </option> <option> Refresh devices </option>';
+
+    $.getJSON('/devices/list', function(data) {
+      console.log(data);
+      for (var device of data) {
+        if (device.type == "strip") {
+          if (device.mac == selection) {
+            prefix = '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
+          } else {
+            options += '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
+          }
+        }
+      }
+      select.innerHTML = prefix + options;
+    });
+  };
+
+  function setDevice(selection) {
+    console.log("STRIP");
+
     var ip = document.getElementById("node-config-input-host");
     var mac = document.getElementById("node-config-input-mac");
     var name = document.getElementById("node-config-input-name");
@@ -70,7 +114,6 @@
       $.getJSON('/devices/list', function(data) {
         for (var device of data) {
           if (device.mac == selection) {
-
 
             ip.value = device.ip
             mac.value = device.mac
@@ -90,26 +133,6 @@
       name.disabled = false
     }
 
-    updateDropDown(selection)
-  }
 
-  function updateDropDown(selection) {
-    var select = document.getElementById("node-input-discovered");
-
-    var current
-    var options = '<option value=manual> manual </option> <option> Refresh devices </option>'
-
-    $.getJSON('/devices/list', function(data) {
-      for (var device of data) {
-        if (device.type == "strip") {
-          if (device.mac == selection) {
-            current = '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>'
-          } else {
-            options += '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>'
-          }
-        }
-      }
-      select.innerHTML = current + options
-    });
-  }
+  };
 </script>

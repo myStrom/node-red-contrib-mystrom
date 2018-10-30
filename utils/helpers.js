@@ -1,5 +1,5 @@
 var localIP = require("ip");
-var typeList = ["switch", "bulb", "buttonplust", "button", "strip"]
+var typeList = ["switch", "bulb", "buttonplus", "button", "strip"]
 var deviceList = []
 var listenerState = false
 
@@ -22,6 +22,8 @@ module.exports = {
   //validity has to be checked beforehand
   getPathAndData: function(type, taskJSON, node) {
     console.log("LOCAL IP: " + localIP.address());
+
+
     ip = taskJSON["ip"]
     mac = taskJSON["mac"]
     request = taskJSON["request"]
@@ -95,10 +97,9 @@ module.exports = {
       if (resolvedPath == "" || (resolvedData == "" && request != "report")) {
         node.error("Unsupported request: " + request);
       }
-
     } else if (type == "buttonplus") {
 
-
+      console.log("request |" + request + "|");
       if (request == "report") {
         //NO DATA SENT
         resolvedPath += "/api/v1/device/"
@@ -111,13 +112,21 @@ module.exports = {
 
         if (data.hasOwnProperty('single')) {
           if (data.single['url'] != 'wire') {
-            var single = data['single']
-            singleURL = "get://" + single['url']
+            var current = data['single']
+            var url = single['url']
 
-            if (single.hasOwnProperty('url-data')) {
-              singleURL = "post://" + single['url'] + "?" + single['url-data']
+            singleURL = "get://" + url
+
+            if (current.hasOwnProperty('url-data')) {
+              var data = single['url-data']
+              //replace = with %3D
+              data = data.replace(/=/g, '%3D');
+              //replace & with %26
+              data = data.replace(/&/g, '%26');
+
+              singleURL = "post://" + url + "?" + data
             }
-            singleURL = "single=" + singleURL + "%26"
+            singleURL = "single=" + singleURL + "&"
           } else {
 
             //CHANGE MIDDLE IP
@@ -125,59 +134,10 @@ module.exports = {
           }
         }
 
-        if (data.hasOwnProperty('double')) {
-          if (data.double['url'] != 'wire') {
-            var double = data['double']
-            doubleURL = "get://" + double['url']
-
-            if (double.hasOwnProperty('url-data')) {
-              doubleURL = "post://" + double['url'] + "?" + double['url-data']
-            }
-            doubleURL = "double=" + doubleURL + "%26"
-          } else {
-
-            doubleURL = "post://" + localIP.address() + ":1880/buttons?button%3D" + ip + "%26action%3Ddouble" + "%26"
-          }
-
-        }
-
-        if (data.hasOwnProperty('long')) {
-          if (data.long['url'] != 'wire') {
-            var long = data['long']
-            longURL = "get://" + long['url']
-
-            if (long.hasOwnProperty('url-data')) {
-              longURL = "post://" + long['url'] + "?" + long['url-data']
-            }
-            longURL = "long=" + longURL + "%26"
-          } else {
-
-            longURL = "post://" + localIP.address() + ":1880/buttons?button%3D" + ip + "%26action%3Dsingle" + "%26"
-            //TODO ADD &
-          }
-
-        }
-
-        /*  if (data.hasOwnProperty('touch')) {
-
-            if (data.touch['url'] != 'wire') {
-              var touch = data['touch']
-              touchURL = "get://" + touch['url']
-
-              if (touch.hasOwnProperty('url-data')) {
-                touchURL = "post://" + touch['url'] + "?" + touch['url-data']
-              }
-              touchURL = "touch" + touchURL
-            } else {
-
-              touchURL = "post://" + localIP.address() + "/buttons?button=" + ip + "&action=single"
-            }
-
-          }*/
-
+        console.log(singleURL);
 
         //remove trailing "&"
-        resolvedData = ("single=" + singleURL /*+ "double=" + doubleURL + "long=" + longURL + "touch=" + touchURL*/ ).replace(/(^%26)|(%26$)/, "")
+        resolvedData = ("single=" + singleURL /*+ "double=" + doubleURL + "long=" + longURL + "touch=" + touchURL*/ ).replace(/(^&)|(&$)/, "")
 
         resolvedPath += "/api/v1/device/" + formatMac(mac)
 
