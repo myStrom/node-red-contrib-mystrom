@@ -6,9 +6,8 @@
 [![NPM](https://nodei.co/npm/node-red-contrib-mystrom.png?compact=true)](https://nodei.co/npm/node-red-contrib-mystrom/)
 ### Features
 - Control nodes via JSON input flows or by simply setting the values in the properties menu
-- No external dependencies needed
+- Automatic discovery of myStrom devices
 - Full functionality of the myStrom api (TODO)
-- Automatic discovery of myStrom devices (TODO)
 - JSON generator through GUI (TODO)
 - Status message of how the message was sent and if it succeeded (TODO)
 
