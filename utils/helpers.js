@@ -1,9 +1,27 @@
 var localIP = require("ip");
+var typeList = ["switch", "bulb", "buttonplust", "button", "strip"]
+var deviceList = []
+var listenerState = false
 
 module.exports = {
+
+  getListernerState: function() {
+    return listenerState;
+  },
+  setListenerState: function(state) {
+    listenerState = state
+  },
+  getDeviceList: function() {
+    return deviceList
+  },
+
+  setDeviceList: function(list) {
+    deviceList = list
+  },
+
   //validity has to be checked beforehand
   getPathAndData: function(type, taskJSON, node) {
-
+    console.log("LOCAL IP: " + localIP.address());
     ip = taskJSON["ip"]
     mac = taskJSON["mac"]
     request = taskJSON["request"]
@@ -80,80 +98,89 @@ module.exports = {
 
     } else if (type == "buttonplus") {
 
+
       if (request == "report") {
         //NO DATA SENT
         resolvedPath += "/api/v1/device/"
-      } else if (type == "set") {
+      } else if (request == "set") {
 
         var singleURL = ""
         var doubleURL = ""
         var longURL = ""
         var touchURL = ""
 
-        if (json.data.hasOwnProperty('single')) {
-          if (json.single['url'] != 'wire') {
-            var single = json['single']
+        if (data.hasOwnProperty('single')) {
+          if (data.single['url'] != 'wire') {
+            var single = data['single']
             singleURL = "get://" + single['url']
 
             if (single.hasOwnProperty('url-data')) {
-              singleURL = "post://" + single['url'] + single['url-data']
+              singleURL = "post://" + single['url'] + "?" + single['url-data']
             }
-            singleURL = "single=" + singleURL + "&"
+            singleURL = "single=" + singleURL + "%26"
           } else {
-            singleURL = "post://" + localIP.address() + "/?button=" + ip + "&action=single"
+
+            //CHANGE MIDDLE IP
+            singleURL = "get://" + "192.168.1.121" /*+ "/buttons" ?button%3D" + ip + "%26action%3Dsingle" + "%26"*/
           }
         }
 
-        if (json.data.hasOwnProperty('double')) {
-          if (json.double['url'] != 'wire') {
-            var double = json['double']
+        if (data.hasOwnProperty('double')) {
+          if (data.double['url'] != 'wire') {
+            var double = data['double']
             doubleURL = "get://" + double['url']
 
             if (double.hasOwnProperty('url-data')) {
-              doubleURL = "post://" + double['url'] + double['url-data']
+              doubleURL = "post://" + double['url'] + "?" + double['url-data']
             }
-            doubleURL = "double=" + doubleURL + "&"
+            doubleURL = "double=" + doubleURL + "%26"
           } else {
-            singleURL = "post://" + localIP.address() + "/?button=" + ip + "&action=double"
+
+            doubleURL = "post://" + localIP.address() + ":1880/buttons?button%3D" + ip + "%26action%3Ddouble" + "%26"
           }
 
         }
 
-        if (json.data.hasOwnProperty('long') && json.long['url'] != 'wire') {
-
-          if (json.long['url'] != 'wire') {
-            var long = json['long']
+        if (data.hasOwnProperty('long')) {
+          if (data.long['url'] != 'wire') {
+            var long = data['long']
             longURL = "get://" + long['url']
 
             if (long.hasOwnProperty('url-data')) {
-              longURL = "post://" + long['url'] + long['url-data']
+              longURL = "post://" + long['url'] + "?" + long['url-data']
             }
-            longURL = "long=" + longURL + "&"
+            longURL = "long=" + longURL + "%26"
           } else {
-            singleURL = "post://" + localIP.address() + "/?button=" + ip + "&action=single"
+
+            longURL = "post://" + localIP.address() + ":1880/buttons?button%3D" + ip + "%26action%3Dsingle" + "%26"
+            //TODO ADD &
           }
 
         }
 
-        if (json.data.hasOwnProperty('touch')) {
-          if (json.touch['url'] != 'wire') {
-            var touch = json['touch']
-            touchURL = "get://" + touch['url']
+        /*  if (data.hasOwnProperty('touch')) {
 
-            if (touch.hasOwnProperty('url-data')) {
-              touchURL = "post://" + touch['url'] + touch['url-data']
+            if (data.touch['url'] != 'wire') {
+              var touch = data['touch']
+              touchURL = "get://" + touch['url']
+
+              if (touch.hasOwnProperty('url-data')) {
+                touchURL = "post://" + touch['url'] + "?" + touch['url-data']
+              }
+              touchURL = "touch" + touchURL
+            } else {
+
+              touchURL = "post://" + localIP.address() + "/buttons?button=" + ip + "&action=single"
             }
-            touchURL = "touch" + touchURL
-          } else {
-            singleURL = "post://" + localIP.address() + "/?button=" + ip + "&action=single"
-          }
 
-        }
+          }*/
 
 
         //remove trailing "&"
-        resolvedData = (singleURL + doubleURL + longURL + touchURL).replace(/(^&)|(&$)/, "")
+        resolvedData = ("single=" + singleURL /*+ "double=" + doubleURL + "long=" + longURL + "touch=" + touchURL*/ ).replace(/(^%26)|(%26$)/, "")
+
         resolvedPath += "/api/v1/device/" + formatMac(mac)
+
       }
     }
 
@@ -168,9 +195,80 @@ module.exports = {
       ret = { success: "false", response: "You might get this message falsely with the myStrom Swithc sometimes" };
     }
     return ret
+  },
+
+  numberToType: function(number) {
+
+    switch (number) {
+      case 101:
+        return "switch" //v1
+        break;
+      case 102:
+        return "bulb"
+        break;
+      case 103:
+        return "buttonplus"
+        break;
+      case 104:
+        return "button"
+        break;
+      case 105:
+        return "strip"
+        break;
+      case 106:
+        return "switch" //v2
+        break;
+      case 107:
+        return "switch" //EU
+        break;
+      default:
+        return "unkown"
+    }
+  },
+
+
+  amountDevicesForType: function() {
+    var amount = new Array(5).fill(0) //amount of devices
+
+    if (deviceList) {
+      for (let i = 0; i < deviceList.length; i++) {
+        var obj = deviceList[i]
+        var index = typeList.indexOf(obj.type)
+        if (index >= 0) {
+          amount[index]++
+        }
+      }
+    }
+    return zipToObject(typeList, amount)
+
+  },
+
+  knownDevicesWithIP: function() {
+    var macList = []
+    var ipList = []
+    for (var i of deviceList) {
+      macList.push(i.mac)
+      ipList.push(i.ip)
+    }
+    return zipToObject(macList, ipList)
+  }
+};
+
+
+function zipToObject(a, b) {
+  if (a.length != b.length) {
+    console.log("NOT SAME LENGTH");
+    return
+
   }
 
-};
+  var object = {}
+  for (var i = 0; i < a.length; i++) {
+    object[a[i]] = b[i]
+  }
+
+  return object
+}
 
 function formatMac(mac) {
   mac = mac.replace(/:/g, '');

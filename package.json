@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-mystrom",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "myStrom nodes to controll all myStrom devices within Node-RED",
   "author": "Hadjimina",
   "homepage": "https://github.com/myStrom/node-red-contrib-mystrom",
@@ -15,15 +15,18 @@
   "bugs": {
     "url": "https://github.com/myStrom/node-red-contrib-mystrom/issues"
   },
-  "dependencies": {"libnmapp":"^0.4.16"},
+  "dependencies": {
+    "ip": ">=1.1.5"
+  },
   "keywords": ["node-red","node-red-contrib", "contrib", "mystrom", "iot","bulb", "switch", "strip","swisscom", "api"],
   "node-red": {
     "nodes": {
-      "myStrom Switch": "src/myStromSwitch.js",
-      "myStrom Device": "src/myStromConfig.js",
       "myStrom Bulb": "src/myStromBulb.js",
+      "myStrom Config Bulb": "src/myStromConfigBulb.js",
+      "myStrom Switch": "src/myStromSwitch.js",
+      "myStrom Config Switch": "src/myStromConfigSwitch.js",
       "myStrom Strip": "src/myStromStrip.js",
-      "myStrom ButtonPlus": "src/myStromButtonPlus.js"
+      "myStrom Config Strip": "src/myStromConfigStrip.js"
     }
   }
 }

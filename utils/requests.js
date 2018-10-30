@@ -1,8 +1,6 @@
 var helpers = require('../utils/helpers')
 var http = require('http');
 
-const dgram = require('dgram');
-
 module.exports = {
   doAsync: function(callback, type, taskJSON, node) {
     var debug = true;
@@ -14,18 +12,13 @@ module.exports = {
     pathResolved = resolvedArray[0]
     dataResolved = resolvedArray[1]
 
-    //BEAUTIFY DIS
-    var currentPort = taskJSON["request"] == "set" ? 7928 : 80
 
-    if (taskJSON["request"] == "set") {
-      currentPort = 7928
-    }
     var http = require('http');
     var body = '';
     var options = {
       host: ip,
       path: pathResolved,
-      port: emulateDevcies ? "8080" : currentPort
+      port: emulateDevcies ? "8080" : "80"
     };
 
     //Set options depending on type of request
@@ -70,6 +63,7 @@ module.exports = {
 
 
   isValid: function(json, type) {
+
     var hasIP = json.hasOwnProperty('ip')
     var hasMAC = json.hasOwnProperty('mac')
     var hasRequest = json.hasOwnProperty('request')
@@ -113,23 +107,28 @@ module.exports = {
         var hasSingle = false;
         var hasDouble = false;
         var hasLong = false;
+        var hasTouch = false;
+
         var data = json.hasOwnProperty('data')
+
         if (data) {
           hasSingle = json.data.hasOwnProperty('single')
-          hasSingle &= json['single'].data.hasOwnProperty('url')
+          hasSingle &= json.data['single'].hasOwnProperty('url')
 
           hasDouble = json.data.hasOwnProperty('double')
-          hasDouble &= json['doube'].data.hasOwnProperty('url')
+          hasDouble &= json.data['double'].hasOwnProperty('url')
 
           hasLong = json.data.hasOwnProperty('long')
-          hasTouch &= json['long'].data.hasOwnProperty('url')
+          hasLong &= json.data['long'].hasOwnProperty('url')
 
           hasTouch = json.data.hasOwnProperty('touch')
-          hasTouch &= json['touch'].data.hasOwnProperty('url')
+          hasTouch &= json.data['touch'].hasOwnProperty('url')
 
         }
+
         return basics && (hasSingle || hasDouble || hasLong || hasTouch)
       } else {
+
         return basics;
       }
     }
