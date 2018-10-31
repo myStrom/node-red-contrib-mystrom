@@ -6,9 +6,8 @@
 [![NPM](https://nodei.co/npm/node-red-contrib-mystrom.png?compact=true)](https://nodei.co/npm/node-red-contrib-mystrom/)
 ### Features
 - Control nodes via JSON input flows or by simply setting the values in the properties menu
-- No external dependencies needed
+- Automatic discovery of myStrom devices
 - Full functionality of the myStrom api (TODO)
-- Automatic discovery of myStrom devices (TODO)
 - JSON generator through GUI (TODO)
 - Status message of how the message was sent and if it succeeded (TODO)
 
@@ -167,9 +166,3 @@ To turn the light strip red with a slow transition:
     }
 
 The api documentatino of the light strip can be found [here.](https://mystrom.ch/wp-content/uploads/REST_API_WRS-1.txtt "myStrom light strip")
-
-### myStrom Button+
-
-Make sure port 7980 is open on your node red server
-
-Normally button accesses a website directly, but we also created a  button receiver in order to be able to use the buttons easyily as triggers in node red

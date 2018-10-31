@@ -1,10 +1,18 @@
 var localIP = require("ip");
 var typeList = ["switch", "bulb", "buttonplus", "button", "strip"]
-var deviceList = []
+var buttonInteractions = ["single", "double", "long", "touch"]
+var deviceList = [] //array of mac addresses which are already registerType
+var wiredList = [] //list of buttons with array of size 4 for each button wheter or not is wired (bool)
 var listenerState = false
 
 module.exports = {
 
+  getWiredList: function() {
+    return wiredList
+  },
+  setWiredList: function() {
+
+  },
   getListernerState: function() {
     return listenerState;
   },
@@ -99,45 +107,45 @@ module.exports = {
       }
     } else if (type == "buttonplus") {
 
-      console.log("request |" + request + "|");
+
       if (request == "report") {
         //NO DATA SENT
-        resolvedPath += "/api/v1/device/"
+        resolvedPath += "/api/v1/device/" + formatMac(mac)
       } else if (request == "set") {
 
-        var singleURL = ""
-        var doubleURL = ""
-        var longURL = ""
-        var touchURL = ""
+        var settingURLs = []
 
-        if (data.hasOwnProperty('single')) {
-          if (data.single['url'] != 'wire') {
-            var current = data['single']
-            var url = single['url']
+        console.log(data);
+        for (var action of buttonInteractions) {
+          var currentURL = ""
+          var errorFlag = false
 
-            singleURL = "get://" + url
+          if (data.hasOwnProperty(action) && data[action]['url'].length > 0) {
 
-            if (current.hasOwnProperty('url-data')) {
-              var data = single['url-data']
-              //replace = with %3D
-              data = data.replace(/=/g, '%3D');
-              //replace & with %26
-              data = data.replace(/&/g, '%26');
+            if (data[action]['url'] != 'wire') {
+              var current = data[action]
+              var url = current['url']
+              currentURL = "get://" + url
 
-              singleURL = "post://" + url + "?" + data
+              if (current.hasOwnProperty('url-data') && current['url-data'].length > 0) {
+                console.log("URL DATA " + current['url-data']);
+                var urlData = current['url-data']
+                //replace = with %3D
+                urlData = urlData.replace(/=/g, '%3D');
+                //replace & with %26
+                urlData = urlData.replace(/&/g, '%26');
+                currentURL = "post://" + url + "?" + urlData
+
+              }
+            } else {
+              //CHANGE MIDDLE IP
+              currentURL = "get://" + "192.168.1.121"
             }
-            singleURL = "single=" + singleURL + "&"
-          } else {
-
-            //CHANGE MIDDLE IP
-            singleURL = "get://" + "192.168.1.121" /*+ "/buttons" ?button%3D" + ip + "%26action%3Dsingle" + "%26"*/
+            var url = action + "=" + currentURL
+            settingURLs.push(url)
           }
         }
-
-        console.log(singleURL);
-
-        //remove trailing "&"
-        resolvedData = ("single=" + singleURL /*+ "double=" + doubleURL + "long=" + longURL + "touch=" + touchURL*/ ).replace(/(^&)|(&$)/, "")
+        resolvedData = settingURLs.join("&")
 
         resolvedPath += "/api/v1/device/" + formatMac(mac)
 
