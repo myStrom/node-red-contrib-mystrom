@@ -2,16 +2,73 @@ var localIP = require("ip");
 var typeList = ["switch", "bulb", "buttonplus", "button", "strip"]
 var buttonInteractions = ["single", "double", "long", "touch"]
 var deviceList = [] //array of mac addresses which are already registerType
-var wiredList = [] //list of buttons with array of size 4 for each button wheter or not is wired (bool)
+var nodeForMac = []
 var listenerState = false
 
 module.exports = {
 
-  getWiredList: function() {
-    return wiredList
-  },
-  setWiredList: function() {
+  setupWiredListFromJSON(taskJSON, node) {
+    //get actions array for wiredList
+    var actions = [taskJSON.data.single['url'], taskJSON.data.double['url'], taskJSON.data.long['url'], taskJSON.data.touch['url']]
+    actions = actions.map((value, index, array) => {
+      return value == "wire"
+    })
 
+    //Set button from wiredlist
+    var buttonList = this.getWiredList()
+    var i = 0
+    for (i; i < buttonList.length; i++) {
+      if (buttonList[i].nodeID == node.id) {
+        buttonList[i].actions = actions
+        buttonList[i].mac = taskJSON.mac
+        break
+      }
+    }
+
+    //if does not already exist (i.e. loop iterated until end)
+    if (i == buttonList.length - 1 || (i == 0 && buttonList.length == 0)) {
+      if (typeof buttonList !== 'undefined' && buttonList) {
+        buttonList = []
+      }
+      buttonList.push({ 'mac': taskJSON.mac, 'nodeID': node.id, 'actions': actions })
+    }
+    this.setWiredList(buttonList)
+
+  },
+  setupNodeMacPairs: function(node) {
+    var buttonList = this.getWiredList()
+    for (var i = 0; i < buttonList.length; i++) {
+      if (buttonList[i].nodeID == node.id) {
+        var nodeForMacTmp = nodeForMac
+        nodeForMacTmp[buttonList[i].mac] = node
+        nodeForMac = nodeForMacTmp
+      }
+    }
+  },
+  setNodeForMac: function(list) {
+    nodeForMac = list
+  },
+  getNodeForMac: function() {
+    return nodeForMac
+  },
+  getWiredList: function() {
+    fs = require('fs');
+    var data
+    var path = __dirname + '/wiredlist.json'
+    if (fs.existsSync(path)) {
+      data = JSON.parse(fs.readFileSync(path, 'utf8'))
+    } else {
+      data = []
+    }
+    return data
+  },
+
+  setWiredList: function(list) {
+    fs = require('fs');
+    var path = __dirname + '/wiredlist.json'
+    fs.writeFileSync(path, JSON.stringify(list), function(err) {
+      if (err) return console.log(err);
+    });
   },
   getListernerState: function() {
     return listenerState;
@@ -29,8 +86,7 @@ module.exports = {
 
   //validity has to be checked beforehand
   getPathAndData: function(type, taskJSON, node) {
-    console.log("LOCAL IP: " + localIP.address());
-
+    console.log("Local ip: " + localIP.address());
 
     ip = taskJSON["ip"]
     mac = taskJSON["mac"]
@@ -115,7 +171,6 @@ module.exports = {
 
         var settingURLs = []
 
-        console.log(data);
         for (var action of buttonInteractions) {
           var currentURL = ""
           var errorFlag = false
@@ -139,7 +194,7 @@ module.exports = {
               }
             } else {
               //CHANGE MIDDLE IP
-              currentURL = "get://" + "192.168.1.121"
+              currentURL = "post://" + "192.168.1.121" + ":1880/buttons?mac%3D" + mac.toUpperCase() + "%26action%3D" + buttonInteractions.indexOf(action)
             }
             var url = action + "=" + currentURL
             settingURLs.push(url)

@@ -133,6 +133,34 @@ module.exports = {
       }
     }
 
+  },
+
+  handleRequest: function(req, DEVICE_TYPE) {
+    console.log(JSON.stringify(req));
+
+    var buttonActions = DEVICE_TYPE != "buttonplus" ? ["single", "double", "long"] : ["single", "double", "long", "touch"]
+
+
+    //check if wire
+    if (req.hasOwnProperty('mac') && req.hasOwnProperty('action')) {
+      var buttonList = helpers.getWiredList()
+      for (var button of buttonList) {
+
+        if (!isNaN(req.action) && parseInt(req.action) < buttonActions.length && button.actions[req.action] && button.mac == req.mac) {
+
+
+          var messages = new Array(buttonActions.length).fill(null)
+          messages[req.action] = { 'payload': true }
+
+          var node = helpers.getNodeForMac()[req.mac]
+          node.send(messages)
+          return "executed successfully"
+          break
+        }
+      }
+    } else {
+      console.log("Faulty request sent: " + req);
+    }
   }
 
 

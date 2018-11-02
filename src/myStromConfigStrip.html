@@ -87,7 +87,7 @@
     var options = '<option value=manual> manual </option> <option> Refresh devices </option>';
 
     $.getJSON('/devices/list', function(data) {
-      console.log(data);
+
       for (var device of data) {
         if (device.type == "strip") {
           if (device.mac == selection) {

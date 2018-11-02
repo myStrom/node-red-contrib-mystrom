@@ -37,6 +37,10 @@
             if (ip.value != "" && mac.value != "" && name.value != "") {
               prefix = '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
 
+              ip.value = device.ip
+              mac.value = device.mac
+              name.value = device.name
+
               ip.disabled = true;
               mac.disabled = true;
               name.disabled = true;
@@ -87,7 +91,7 @@
     var options = '<option value=manual> manual </option> <option> Refresh devices </option>';
 
     $.getJSON('/devices/list', function(data) {
-      console.log(data);
+
       for (var device of data) {
         if (device.type == "buttonplus") {
           if (device.mac == selection) {
