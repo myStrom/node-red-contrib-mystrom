@@ -3,7 +3,7 @@ var http = require('http');
 
 module.exports = {
   doAsync: function(callback, type, taskJSON, node) {
-    var debug = true;
+    var debug = false;
     var emulateDevcies = false;
 
     ip = taskJSON["ip"]
@@ -131,13 +131,35 @@ module.exports = {
 
         return basics;
       }
+    } else if (type == "button") {
+      if (json['request'] == 'set') {
+        var hasSingle = false;
+        var hasDouble = false;
+        var hasLong = false;
+
+        var data = json.hasOwnProperty('data')
+
+        if (data) {
+          hasSingle = json.data.hasOwnProperty('single')
+          hasSingle &= json.data['single'].hasOwnProperty('url')
+
+          hasDouble = json.data.hasOwnProperty('double')
+          hasDouble &= json.data['double'].hasOwnProperty('url')
+
+          hasLong = json.data.hasOwnProperty('long')
+          hasLong &= json.data['long'].hasOwnProperty('url')
+        }
+
+        return basics && (hasSingle || hasDouble || hasLong)
+      } else {
+
+        return basics;
+      }
     }
 
   },
 
   handleRequest: function(req, DEVICE_TYPE) {
-    console.log(JSON.stringify(req));
-
     var buttonActions = DEVICE_TYPE != "buttonplus" ? ["single", "double", "long"] : ["single", "double", "long", "touch"]
 
 
@@ -149,8 +171,8 @@ module.exports = {
         if (!isNaN(req.action) && parseInt(req.action) < buttonActions.length && button.actions[req.action] && button.mac == req.mac) {
 
 
-          var messages = new Array(buttonActions.length).fill(null)
-          messages[req.action] = { 'payload': true }
+          var messages = new Array(buttonActions.length + 1).fill(null)
+          messages[req.action + 1] = { 'payload': true }
 
           var node = helpers.getNodeForMac()[req.mac]
           node.send(messages)

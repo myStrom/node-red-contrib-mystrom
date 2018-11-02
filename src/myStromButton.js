@@ -1,5 +1,7 @@
 module.exports = function(RED) {
-  function myStromStrip(config) {
+
+
+  function myStromButton(config) {
     RED.nodes.createNode(this, config);
     var context = this.context();
     var node = this;
@@ -8,27 +10,35 @@ module.exports = function(RED) {
     var requests = require('../utils/requests')
     var deviceHelper = require('../utils/deviceListHelper')
     deviceHelper.startDeviceListener(node)
+    this.DEVICE_TYPE = "button"
+    helpers.setupNodeMacPairs(node)
 
-    this.DEVICE_TYPE = "strip"
 
     //EXECUTE REQUEST
     this.on("input", function(msg) {
+      require('../utils/helpers').setupNodeMacPairs(node)
       var taskJSON = msg["payload"]
-
 
       this.status({ fill: "blue", shape: "ring", text: "Using json" });
 
       if (!requests.isValid(taskJSON, this.DEVICE_TYPE)) {
-        taskJSON = { "ip": this.device.host, "mac": this.device.mac, "request": config.request, "data": { "color": config.color, "ramp": config.ramp } }
 
+        taskJSON = {
+          'ip': this.device.host,
+          'mac': this.device.mac,
+          'request': config.request,
+          'data': { 'single': { 'url': config.singleURL, 'url-data': config.singleData }, 'double': { 'url': config.doubleURL, 'url-data': config.doubleData }, 'long': { 'url': config.longURL, 'url-data': config.longData }, 'touch': { 'url': config.touchURL, 'url-data': config.touchData } }
+        }
         this.status({ fill: "yellow", shape: "ring", text: "Using property" });
-
 
         if (!requests.isValid(taskJSON, this.DEVICE_TYPE)) {
           node.error("Conversion from property to json failed")
         }
       }
 
+      console.log(taskJSON);
+      helpers.setupWiredListFromJSON(taskJSON, node)
+      helpers.setupNodeMacPairs(node)
       requests.doAsync(back, this.DEVICE_TYPE, taskJSON, node)
     });
     return;
@@ -38,13 +48,21 @@ module.exports = function(RED) {
       if (str["success"] == "false") {
         node.error("An error occured while sending")
       }
-
       node.send({ payload: str });
     }
 
     //CLOSE
     this.on('close', function() {});
+
   }
-  RED.nodes.registerType("myStrom Strip", myStromStrip);
+  RED.nodes.registerType("myStrom Button", myStromButton);
+
+
+  RED.httpAdmin.post("/buttons", function(req, res) {
+    var request = require('../utils/requests')
+    req = req.body
+    var DEVICE_TYPE = 'button'
+    res.json(request.handleRequest(req, DEVICE_TYPE))
+  });
 
 };

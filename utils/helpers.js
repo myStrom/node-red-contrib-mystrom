@@ -7,7 +7,21 @@ var listenerState = false
 
 module.exports = {
 
-  setupWiredListFromJSON(taskJSON, node) {
+  getHostIp: function() {
+    var os = require('os');
+    var networkInterfaces = os.networkInterfaces();
+
+    for (var key of Object.keys(networkInterfaces)) {
+      for (var i = 0; i < networkInterfaces[key].length; i++) {
+        var iface = networkInterfaces[key][i]
+        if (iface.family == 'IPv4' && iface.mac != '00:00:00:00:00:00') {
+          return iface.address
+        }
+      }
+    }
+  },
+
+  setupWiredListFromJSON: function(taskJSON, node) {
     //get actions array for wiredList
     var actions = [taskJSON.data.single['url'], taskJSON.data.double['url'], taskJSON.data.long['url'], taskJSON.data.touch['url']]
     actions = actions.map((value, index, array) => {
@@ -22,16 +36,18 @@ module.exports = {
         buttonList[i].actions = actions
         buttonList[i].mac = taskJSON.mac
         break
+      } else if (buttonList[i].mac == taskJSON.mac) {
+        buttonList[i].actions = actions
+        buttonList[i].nodeID = node.id
+        break
       }
     }
 
     //if does not already exist (i.e. loop iterated until end)
-    if (i == buttonList.length - 1 || (i == 0 && buttonList.length == 0)) {
-      if (typeof buttonList !== 'undefined' && buttonList) {
-        buttonList = []
-      }
+    if (i == buttonList.length || (i == 0 && buttonList.length == 0)) {
       buttonList.push({ 'mac': taskJSON.mac, 'nodeID': node.id, 'actions': actions })
     }
+
     this.setWiredList(buttonList)
 
   },
@@ -86,8 +102,6 @@ module.exports = {
 
   //validity has to be checked beforehand
   getPathAndData: function(type, taskJSON, node) {
-    console.log("Local ip: " + localIP.address());
-
     ip = taskJSON["ip"]
     mac = taskJSON["mac"]
     request = taskJSON["request"]
@@ -161,7 +175,7 @@ module.exports = {
       if (resolvedPath == "" || (resolvedData == "" && request != "report")) {
         node.error("Unsupported request: " + request);
       }
-    } else if (type == "buttonplus") {
+    } else if (type == "buttonplus" || type == "button") {
 
 
       if (request == "report") {
@@ -183,7 +197,6 @@ module.exports = {
               currentURL = "get://" + url
 
               if (current.hasOwnProperty('url-data') && current['url-data'].length > 0) {
-                console.log("URL DATA " + current['url-data']);
                 var urlData = current['url-data']
                 //replace = with %3D
                 urlData = urlData.replace(/=/g, '%3D');
@@ -194,7 +207,7 @@ module.exports = {
               }
             } else {
               //CHANGE MIDDLE IP
-              currentURL = "post://" + "192.168.1.121" + ":1880/buttons?mac%3D" + mac.toUpperCase() + "%26action%3D" + buttonInteractions.indexOf(action)
+              currentURL = "post://" + this.getHostIp() + ":1880/buttons?mac%3D" + mac.toUpperCase() + "%26action%3D" + buttonInteractions.indexOf(action)
             }
             var url = action + "=" + currentURL
             settingURLs.push(url)

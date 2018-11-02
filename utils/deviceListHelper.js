@@ -2,16 +2,19 @@ var helpers = require('../utils/helpers')
 
 module.exports = {
 
-  checkDevices: function(deviceList) {
-
+  startDeviceListener: function(node) {
+    //Start listener if not already running
+    var listenerState = helpers.getListernerState()
+    if (!listenerState) {
+      this.deviceListener(node)
+    }
   },
 
-  deviceListener: function() {
+  deviceListener: function(node) {
     const dgram = require('dgram');
     const server = dgram.createSocket('udp4');
 
     helpers.setListenerState(true)
-    //var deviceList = globalContext.get("deviceList")
     var deviceList = helpers.getDeviceList()
 
     server.on('listening', () => {
@@ -51,7 +54,7 @@ module.exports = {
       if (Object.keys(known).indexOf(mac) < 0) {
         deviceList.push(device)
         helpers.setDeviceList(deviceList)
-        console.log(`ADDED ${name} with ${mac}`);
+        node.warn(`Discvoered: ${name}@${ip} with ${mac}`)
       }
     })
 

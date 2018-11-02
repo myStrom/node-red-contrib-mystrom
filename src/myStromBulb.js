@@ -4,8 +4,10 @@ module.exports = function(RED) {
     var context = this.context();
     var node = this;
     this.device = RED.nodes.getNode(config.device);
-    //var helpers = require('../utils/helpers')
+    var helpers = require('../utils/helpers')
     var requests = require('../utils/requests')
+    var deviceHelper = require('../utils/deviceListHelper')
+    deviceHelper.startDeviceListener(node)
 
     this.DEVICE_TYPE = "bulb"
 

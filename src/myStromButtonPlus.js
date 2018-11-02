@@ -9,6 +9,9 @@ module.exports = function(RED) {
     this.device = RED.nodes.getNode(config.device);
     var helpers = require('../utils/helpers')
     var requests = require('../utils/requests')
+    var deviceHelper = require('../utils/deviceListHelper')
+    deviceHelper.startDeviceListener(node)
+
     this.DEVICE_TYPE = "buttonplus"
     helpers.setupNodeMacPairs(node)
 
@@ -33,6 +36,9 @@ module.exports = function(RED) {
           node.error("Conversion from property to json failed")
         }
       }
+
+
+
       helpers.setupWiredListFromJSON(taskJSON, node)
       helpers.setupNodeMacPairs(node)
       requests.doAsync(back, this.DEVICE_TYPE, taskJSON, node)

@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  RED.nodes.registerType('myStrom Button Plus', {
+  RED.nodes.registerType('myStrom Button', {
     category: 'myStrom',
     color: '#5ab42e',
     defaults: {
@@ -12,7 +12,7 @@
       },
       device: {
         value: "",
-        type: "myStrom Config Button Plus",
+        type: "myStrom Config Button",
         required: true
       },
       singleURL: {
@@ -41,17 +41,17 @@
       }
 
     },
-    outputLabels: ["Report output", "Single Click output", "Double click output", "Long click output", "Touch output"],
+    outputLabels: ["Report output", "Single Click output", "Double click output", "Long click output"],
     inputs: 1,
-    outputs: 5,
-    icon: "myStrom-Button-plus.png",
+    outputs: 4,
+    icon: "myStrom-Button.png",
     label: function() {
-      return this.name || "myStrom Button Plus";
+      return this.name || "myStrom Button";
     }
   });
 </script>
 
-<script type="text/x-red" data-template-name="myStrom Button Plus">
+<script type="text/x-red" data-template-name="myStrom Button">
   <div class="form-row">
     <label for="node-input-name"><i class="icon-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name">
@@ -112,22 +112,6 @@
     </div>
   </div>
 
-  <h4> Touch</h4>
-  <div class="form-row">
-    <div class="inline">
-      <div>
-        Data:
-        <input type="text" id="node-input-touchData" placeholder="key=value&...">
-      </div>
-      <div>
-        Address:
-        <input type="text" id="node-input-touchURL" placeholder="192.168..../wire" style="padding-left:10px">
-      </div>
-    </div>
-  </div>
-
-
-
 </script>
 <style>
   input {
@@ -166,6 +150,6 @@
 </script>
 
 
-<script type="text/x-red " data-help-name="myStrom Button Plus ">
-  <p>A node to control myStrom Button Plus</p>
+<script type="text/x-red " data-help-name="myStrom Button ">
+  <p>A node to control myStrom Button</p>
 </script>

@@ -6,6 +6,8 @@ module.exports = function(RED) {
     this.device = RED.nodes.getNode(config.device);
     var helpers = require('../utils/helpers')
     var requests = require('../utils/requests')
+    var deviceHelper = require('../utils/deviceListHelper')
+    deviceHelper.startDeviceListener(node)
 
     this.DEVICE_TYPE = "switch"
 

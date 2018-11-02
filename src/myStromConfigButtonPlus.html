@@ -22,7 +22,7 @@
     oneditprepare: function() {
       var selection = document.getElementById("node-input-discovered");
 
-      var options = '<option value=manual> manual </option> <option> Refresh devices </option>';
+      var options = '<option value=manual> manual </option> <option value=refresh> Refresh devices </option>';
       var prefix = "";
 
       $.getJSON('/devices/list', function(data) {
@@ -36,10 +36,6 @@
             //Currently selected device
             if (ip.value != "" && mac.value != "" && name.value != "") {
               prefix = '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
-
-              ip.value = device.ip
-              mac.value = device.mac
-              name.value = device.name
 
               ip.disabled = true;
               mac.disabled = true;
@@ -59,7 +55,7 @@
 <script type="text/x-red" data-template-name="myStrom Config Button Plus">
   <div class="form-row">
     <label for="node-config-input-name"><i class="icon-bookmark"></i> Name</label>
-    <input type="text" placeholder="Button Plus" id="node-config-input-name">
+    <input type="text" placeholder="Button" id="node-config-input-name">
   </div>
   <div class="form-row">
     <label for="node-config-input-host"><i class="icon-bookmark"></i> IP</label>
@@ -73,25 +69,25 @@
   <h5> Discovered Button Plus</h5>
   <div class="form-row">
     <label for="node-input-discovered"><i class="fa fa-refresh"></i> Selection </label>
-    <select type="text" id="node-input-discovered" onchange="testing(value)">
+    <select type="text" id="node-input-discovered" onchange="changedButtonPlus(value)">
     </select>
   </div>
 </script>
 
+
 <script type="text/javascript">
-  function testing(value) {
-    refresh(value);
-    setDevice(value);
+  function changedButtonPlus(value) {
+    refreshButtonPlus(value);
+    setDeviceButtonPlus(value);
   };
 
-  function refresh(selection) {
+  function refreshButtonPlus(selection) {
     var select = document.getElementById("node-input-discovered");
 
     var prefix = "";
-    var options = '<option value=manual> manual </option> <option> Refresh devices </option>';
+    var options = '<option value=manual> manual </option> <option value=refresh> Refresh devices </option>';
 
     $.getJSON('/devices/list', function(data) {
-
       for (var device of data) {
         if (device.type == "buttonplus") {
           if (device.mac == selection) {
@@ -105,16 +101,14 @@
     });
   };
 
-  function setDevice(selection) {
-    console.log("BUTTON+");
+  function setDeviceButtonPlus(selection) {
 
     var ip = document.getElementById("node-config-input-host");
     var mac = document.getElementById("node-config-input-mac");
     var name = document.getElementById("node-config-input-name");
 
     //Correct device is selected, insert into fields
-    if (selection != "manual" && selection != "Some Device") {
-
+    if (selection != "manual" && selection != "refresh" && selection != undefined) {
       $.getJSON('/devices/list', function(data) {
         for (var device of data) {
           if (device.mac == selection) {

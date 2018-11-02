@@ -13,6 +13,10 @@
       name: {
         value: "",
         required: false
+      },
+      server: {
+        value: "",
+        required: true
       }
 
     },
@@ -22,7 +26,7 @@
     oneditprepare: function() {
       var selection = document.getElementById("node-input-discovered");
 
-      var options = '<option value=manual> manual </option> <option> Refresh devices </option>';
+      var options = '<option value=manual> manual </option> <option value=refresh> Refresh devices </option>';
       var prefix = "";
 
       $.getJSON('/devices/list', function(data) {
@@ -69,23 +73,30 @@
   <h5> Discovered Bulbs</h5>
   <div class="form-row">
     <label for="node-input-discovered"><i class="fa fa-refresh"></i> Selection </label>
-    <select type="text" id="node-input-discovered" onchange="testing()">
+    <select type="text" id="node-input-discovered" onchange="changedBulb(value)">
+    </select>
+  </div>
+  <h6> Discovered Buttons</h6>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa  fa-server "></i> Server IP (Normaly this is found automatically) </label>
+    <select type="text" id="node-input-server" onchange="changedButton(value)">
     </select>
   </div>
 </script>
 
+
 <script type="text/javascript">
-  function testing(value) {
-    refresh(value);
-    setDevice(value);
+  //1. SET ONCHANGE TO BULB AND CHANGE NAME OF FUNCTION TO BE UNIQUE!
+  function changedBulb(value) {
+    refreshBulb(value);
+    setDeviceBulb(value);
   };
 
-  function refresh(selection) {
-    console.log("refresh");
+  function refreshBulb(selection) {
     var select = document.getElementById("node-input-discovered");
 
     var prefix = "";
-    var options = '<option value=manual> manual </option> <option> Refresh devices </option>';
+    var options = '<option value=manual> manual </option> <option value=refresh> Refresh devices </option>';
 
     $.getJSON('/devices/list', function(data) {
       for (var device of data) {
@@ -101,16 +112,13 @@
     });
   };
 
-  function setDevice(selection) {
-    console.log("setDevice");
+  function setDeviceBulb(selection) {
 
     var ip = document.getElementById("node-config-input-host");
     var mac = document.getElementById("node-config-input-mac");
     var name = document.getElementById("node-config-input-name");
 
-    //Correct device is selected, insert into fields
-    if (selection != "manual" && selection != "Some Device") {
-
+    if (selection != "manual" && selection != "refresh" && selection != undefined) {
       $.getJSON('/devices/list', function(data) {
         for (var device of data) {
           if (device.mac == selection) {
