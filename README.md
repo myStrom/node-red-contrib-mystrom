@@ -1,6 +1,6 @@
 ![logo](misc/logo.jpg)
 
-[![Build Status](https://travis-ci.org/myStrom/node-red-contrib-mystrom.svg?branch=master)](https://travis-ci.org/myStrom/node-red-contrib-mystrom) ![npm-version](https://badge.fury.io/js/node-red-contrib-mystrom.svg) [![dependencies Status](https://david-dm.org/myStrom/node-red-contrib-mystrom/status.svg)](https://david-dm.org/myStrom/node-red-contrib-mystrom) [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/myStrom/node-red-contrib-mystrom/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/myStrom/node-red-contrib-mystrom.svg?branch=master)](https://travis-ci.org/myStrom/node-red-contrib-mystrom) ![npm-version](https://badge.fury.io/js/node-red-contrib-mystrom.svg) [![dependencies Status](https://david-dm.org/myStrom/node-red-contrib-mystrom/status.svg)](https://david-dm.org/myStrom/node-red-contrib-mystrom) [![Packagist](https://img.shields.io/npm/l/node-red-contrib-mystrom.svg?registry_uri=https%3A%2F%2Fregistry.npmjs.com)](https://github.com/myStrom/node-red-contrib-mystrom/blob/master/LICENSE)
 
 
 [![NPM](https://nodei.co/npm/node-red-contrib-mystrom.png?compact=true)](https://nodei.co/npm/node-red-contrib-mystrom/)
