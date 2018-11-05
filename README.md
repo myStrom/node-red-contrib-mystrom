@@ -29,9 +29,13 @@ All devices can be controlled in two ways.
 
 If both options are available i.e. (a valid JSON gets sent as input to a myStrom node which was already been setup with the property editor) the JSON input will be executed. This means **JSON takes precedence over the property editor**.
 
+Also make sure that you can listen on port 7979 on your node-red host since otherwise the automatic device discovery will not work.
+
 ### Automatic Device discovery
 
 ![](misc/discovery.png)
+
+**You have to be able to listen on port 7979 for this to work**
 
 Device on your network are automatically discovered on start up. You will see a warning message for each discovered device in your debug panel. Fear not this is not an actual warning but rather an information for the user. The devices detected can be selected in the dropdown menus when specifying which device to use through the property editor of a myStrom node. Note: Buttons will only be discovered in configuration mode. See the section [Buttons](#buttons) for further info.
 
