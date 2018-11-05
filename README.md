@@ -6,7 +6,7 @@
 [![NPM](https://nodei.co/npm/node-red-contrib-mystrom.png?compact=true)](https://nodei.co/npm/node-red-contrib-mystrom/)
 ### Features
 - Control nodes via JSON input flows or by simply setting the values in the properties menu
-- [Automatic discovery of myStrom devices](#discover-devices)
+- [Automatic discovery of myStrom devices](#automatic-device-discovery)
 - Full functionality of the myStrom api
 - Status message of how the message was sent
 - Status if message has arrived at destination (TODO)
@@ -17,6 +17,9 @@
 myStrom-Node-RED was written in **Node.js** v4.2.6 and tested on Node-RED v0.19.4.
 
 To use it execute `npm install node-red-contrib-mystrom`.
+### Bugs
+
+Please report all bugs through the Github issues page. Your help is greatly appreciated.
 
 ### Execution (IMPORTANT!!!)
 All devices can be controlled in two ways.
@@ -25,6 +28,13 @@ All devices can be controlled in two ways.
   2. By specifing the wished function with via the property editor. This is the easier option and is recommended for newer users. **If this option is chosen you can disregard the Usage section
 
 If both options are available i.e. (a valid JSON gets sent as input to a myStrom node which was already been setup with the property editor) the JSON input will be executed. This means **JSON takes precedence over the property editor**.
+
+### Automatic Device discovery
+
+![](misc/discovery.png)
+
+Device on your network are automatically discovered on start up. You will see a warning message for each discovered device in your debug panel. Fear not this is not an actual warning but rather an information for the user. The devices detected can be selected in the dropdown menus when specifying which device to use through the property editor of a myStrom node. Note: Buttons will only be discovered in configuration mode. See the section [Buttons](#buttons) for further info.
+
 
 ### Nodes
 
@@ -181,7 +191,7 @@ In order to be able to upload data to the button the button has to be in configu
 - *Button*: Charging it for a few seconds, detaching in and pressing the it
 - *Button+*: Remove the battery and insert it again. The battery can be accessed by rotating the base of the button (the one with 4 small magnets on it).
 
- You can check that the button is in configuration mode by checking if the device has been popped up as [discovered](#discover-devices).
+ You can check that the button is in configuration mode by checking if the device has been popped up as [discovered](#automatic-device-discovery).
 
 
 Once the buttons have been configured you do not need to reuplade the data everytime you have made changes which nodes you have atteched to the button outputs. Only when you change things in the actual node property you will have to upload it again.
