@@ -6,6 +6,9 @@ var nodeForMac = []
 var listenerState = false
 
 module.exports = {
+  insert: function(str, index, value) {
+    return str.substr(0, index) + value + str.substr(index);
+  },
 
   getHostIp: function() {
     var os = require('os');

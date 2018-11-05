@@ -67,6 +67,23 @@ module.exports = function(RED) {
     res.json(request.handleRequest(req, DEVICE_TYPE))
   });
 
+  RED.httpAdmin.post("/gen", function(req, res) {
+    var helpers = require('../utils/helpers')
+    req = req.body
+
+    mac1 = helpers.insert(req.mac, 2, ':')
+    mac1 = helpers.insert(mac1, 5, ':')
+    mac1 = helpers.insert(mac1, 8, ':')
+    mac1 = helpers.insert(mac1, 11, ':')
+    mac1 = helpers.insert(mac1, 14, ':')
+
+    var DEVICE_TYPE = 'buttonplus'
+    if (req.action == '5') {
+      var node = helpers.getNodeForMac()[mac1]
+      node.send({ payload: req.wheel })
+    }
+    res.json("success")
+  });
 
 
 };
