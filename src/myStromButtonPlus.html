@@ -1,0 +1,171 @@
+<script type="text/javascript">
+  RED.nodes.registerType('myStrom Button Plus', {
+    category: 'myStrom',
+    color: '#5ab42e',
+    defaults: {
+      name: {
+        value: ""
+      },
+      request: {
+        value: "",
+        required: true
+      },
+      device: {
+        value: "",
+        type: "myStrom Config Button Plus",
+        required: true
+      },
+      singleURL: {
+        value: ""
+      },
+      singleData: {
+        value: ""
+      },
+      doubleURL: {
+        value: ""
+      },
+      doubleData: {
+        value: ""
+      },
+      longURL: {
+        value: ""
+      },
+      longData: {
+        value: ""
+      },
+      touchURL: {
+        value: ""
+      },
+      touchData: {
+        value: ""
+      }
+
+    },
+    outputLabels: ["Report output", "Single Click output", "Double click output", "Long click output", "Touch output"],
+    inputs: 1,
+    outputs: 5,
+    icon: "myStrom-ButtonPlus.png",
+    label: function() {
+      return this.name || "myStrom Button Plus";
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="myStrom Button Plus">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-device"><i class="fa fa-toggle-on"></i> Device</label>
+    <input id="node-input-device">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-request"><i class="fa fa-paper-plane"></i>Request</label>
+    <select type="text" id="node-input-request" onchange="requestChange(value)">
+      <option value="set">Set button action</option>
+      <option value="report">Report</option>
+    </select>
+  </div>
+
+  <h4> Single Click</h4>
+  <div class="form-row">
+    <div class="inline">
+      <div>
+        Data:
+        <input type="text" id="node-input-singleData" placeholder="key=value&...">
+      </div>
+      <div>
+        Address:
+        <input type="text" id="node-input-singleURL" placeholder="192.168..../wire" style="padding-left:10px">
+      </div>
+    </div>
+  </div>
+
+  <h4> Double Click</h4>
+  <div class="form-row">
+    <div class="inline">
+      <div>
+        Data:
+        <input type="text" id="node-input-doubleData" placeholder="key=value&...">
+      </div>
+      <div>
+        Address:
+        <input type="text" id="node-input-doubleURL" placeholder="192.168..../wire" style="padding-left:10px">
+      </div>
+    </div>
+  </div>
+
+  <h4> Long Click</h4>
+  <div class="form-row">
+    <div class="inline">
+      <div>
+        Data:
+        <input type="text" id="node-input-longData" placeholder="key=value&...">
+      </div>
+      <div>
+        Address:
+        <input type="text" id="node-input-longURL" placeholder="192.168..../wire" style="padding-left:10px">
+      </div>
+    </div>
+  </div>
+
+  <h4> Touch</h4>
+  <div class="form-row">
+    <div class="inline">
+      <div>
+        Data:
+        <input type="text" id="node-input-touchData" placeholder="key=value&...">
+      </div>
+      <div>
+        Address:
+        <input type="text" id="node-input-touchURL" placeholder="192.168..../wire" style="padding-left:10px">
+      </div>
+    </div>
+  </div>
+
+
+
+</script>
+<style>
+  input {
+    width: 100%;
+    display: block;
+  }
+
+  div.inline {
+    width: 100%;
+    display: table;
+  }
+
+  div.inline div {
+    display: table-cell;
+  }
+
+  div.inline div:nth-child(n+2) {}
+</style>
+
+<script>
+  function requestChange(value) {
+    var actions = ["single", "double", "long", "touch"]
+    var actionsData = ["URL ", "Data "]
+
+    var elements = document.getElementsByClassName("inline");
+
+    for (var i = 0; i < elements.length; i++) {
+      for (var input of elements[i].getElementsByTagName('input')) {
+        //Disable if equal to report
+        var disable = value != "set"
+        input.disabled = disable
+      }
+
+    }
+  }
+</script>
+
+
+<script type="text/x-red " data-help-name="myStrom Button Plus ">
+  <p>A node to control myStrom Button Plus</p>
+</script>

@@ -22,7 +22,7 @@
     oneditprepare: function() {
       var selection = document.getElementById("node-input-discovered");
 
-      var options = '<option value=manual> manual </option> <option> Refresh devices </option>';
+      var options = '<option value=manual> manual </option> <option value=refresh> Refresh devices </option>';
       var prefix = "";
 
       $.getJSON('/devices/list', function(data) {
@@ -69,30 +69,25 @@
   <h5> Discovered Switches</h5>
   <div class="form-row">
     <label for="node-input-discovered"><i class="fa fa-refresh"></i> Selection </label>
-    <select type="text" id="node-input-discovered" onchange="testing(value)">
+    <select type="text" id="node-input-discovered" onchange="changedSwitch(value)">
     </select>
   </div>
 </script>
 
+
 <script type="text/javascript">
-  function testing(value) {
-    console.log(value);
-    refresh(value);
-    setDevice(value);
+  function changedSwitch(value) {
+    refreshSwitch(value);
+    setDeviceSwitch(value);
   };
 
-  function refresh(selection) {
-    console.log(selection);
-
-
-    console.log("updateDropDown");
+  function refreshSwitch(selection) {
     var select = document.getElementById("node-input-discovered");
 
     var prefix = "";
-    var options = '<option value=manual> manual </option> <option> Refresh devices </option>';
+    var options = '<option value=manual> manual </option> <option value=refresh> Refresh devices </option>';
 
     $.getJSON('/devices/list', function(data) {
-      console.log(data);
       for (var device of data) {
         if (device.type == "switch") {
           if (device.mac == selection) {
@@ -106,16 +101,14 @@
     });
   };
 
-  function setDevice(selection) {
-    console.log("CHANGED");
+  function setDeviceSwitch(selection) {
 
     var ip = document.getElementById("node-config-input-host");
     var mac = document.getElementById("node-config-input-mac");
     var name = document.getElementById("node-config-input-name");
 
     //Correct device is selected, insert into fields
-    if (selection != "manual" && selection != "Some Device") {
-
+    if (selection != "manual" && selection != "refresh" && selection != undefined) {
       $.getJSON('/devices/list', function(data) {
         for (var device of data) {
           if (device.mac == selection) {

@@ -1,10 +1,91 @@
 var localIP = require("ip");
-var typeList = ["switch", "bulb", "buttonplust", "button", "strip"]
-var deviceList = []
+var typeList = ["switch", "bulb", "buttonplus", "button", "strip"]
+var buttonInteractions = ["single", "double", "long", "touch"]
+var deviceList = [] //array of mac addresses which are already registerType
+var nodeForMac = []
 var listenerState = false
 
 module.exports = {
 
+  getHostIp: function() {
+    var os = require('os');
+    var networkInterfaces = os.networkInterfaces();
+
+    for (var key of Object.keys(networkInterfaces)) {
+      for (var i = 0; i < networkInterfaces[key].length; i++) {
+        var iface = networkInterfaces[key][i]
+        if (iface.family == 'IPv4' && iface.mac != '00:00:00:00:00:00') {
+          return iface.address
+        }
+      }
+    }
+  },
+
+  setupWiredListFromJSON: function(taskJSON, node) {
+    //get actions array for wiredList
+    var actions = [taskJSON.data.single['url'], taskJSON.data.double['url'], taskJSON.data.long['url'], taskJSON.data.touch['url']]
+    actions = actions.map((value, index, array) => {
+      return value == "wire"
+    })
+
+    //Set button from wiredlist
+    var buttonList = this.getWiredList()
+    var i = 0
+    for (i; i < buttonList.length; i++) {
+      if (buttonList[i].nodeID == node.id) {
+        buttonList[i].actions = actions
+        buttonList[i].mac = taskJSON.mac
+        break
+      } else if (buttonList[i].mac == taskJSON.mac) {
+        buttonList[i].actions = actions
+        buttonList[i].nodeID = node.id
+        break
+      }
+    }
+
+    //if does not already exist (i.e. loop iterated until end)
+    if (i == buttonList.length || (i == 0 && buttonList.length == 0)) {
+      buttonList.push({ 'mac': taskJSON.mac, 'nodeID': node.id, 'actions': actions })
+    }
+
+    this.setWiredList(buttonList)
+
+  },
+  setupNodeMacPairs: function(node) {
+    var buttonList = this.getWiredList()
+    for (var i = 0; i < buttonList.length; i++) {
+      if (buttonList[i].nodeID == node.id) {
+        var nodeForMacTmp = nodeForMac
+        nodeForMacTmp[buttonList[i].mac] = node
+        nodeForMac = nodeForMacTmp
+      }
+    }
+  },
+  setNodeForMac: function(list) {
+    nodeForMac = list
+  },
+  getNodeForMac: function() {
+    return nodeForMac
+  },
+  getWiredList: function() {
+    fs = require('fs');
+    var data
+    var path = __dirname + '/wiredlist.json'
+    if (fs.existsSync(path)) {
+      data = JSON.parse(fs.readFileSync(path, 'utf8'))
+    } else {
+      data = []
+    }
+    return data
+  },
+
+  setWiredList: function(list) {
+    fs = require('fs');
+    var path = __dirname + '/wiredlist.json'
+    fs.writeFileSync(path, JSON.stringify(list), function(err) {
+      if (err) return console.log(err);
+    });
+  },
   getListernerState: function() {
     return listenerState;
   },
@@ -21,7 +102,6 @@ module.exports = {
 
   //validity has to be checked beforehand
   getPathAndData: function(type, taskJSON, node) {
-    console.log("LOCAL IP: " + localIP.address());
     ip = taskJSON["ip"]
     mac = taskJSON["mac"]
     request = taskJSON["request"]
@@ -95,89 +175,45 @@ module.exports = {
       if (resolvedPath == "" || (resolvedData == "" && request != "report")) {
         node.error("Unsupported request: " + request);
       }
-
-    } else if (type == "buttonplus") {
+    } else if (type == "buttonplus" || type == "button") {
 
 
       if (request == "report") {
         //NO DATA SENT
-        resolvedPath += "/api/v1/device/"
+        resolvedPath += "/api/v1/device/" + formatMac(mac)
       } else if (request == "set") {
 
-        var singleURL = ""
-        var doubleURL = ""
-        var longURL = ""
-        var touchURL = ""
+        var settingURLs = []
 
-        if (data.hasOwnProperty('single')) {
-          if (data.single['url'] != 'wire') {
-            var single = data['single']
-            singleURL = "get://" + single['url']
+        for (var action of buttonInteractions) {
+          var currentURL = ""
+          var errorFlag = false
 
-            if (single.hasOwnProperty('url-data')) {
-              singleURL = "post://" + single['url'] + "?" + single['url-data']
-            }
-            singleURL = "single=" + singleURL + "%26"
-          } else {
+          if (data.hasOwnProperty(action) && data[action]['url'].length > 0) {
 
-            //CHANGE MIDDLE IP
-            singleURL = "get://" + "192.168.1.121" /*+ "/buttons" ?button%3D" + ip + "%26action%3Dsingle" + "%26"*/
-          }
-        }
+            if (data[action]['url'] != 'wire') {
+              var current = data[action]
+              var url = current['url']
+              currentURL = "get://" + url
 
-        if (data.hasOwnProperty('double')) {
-          if (data.double['url'] != 'wire') {
-            var double = data['double']
-            doubleURL = "get://" + double['url']
+              if (current.hasOwnProperty('url-data') && current['url-data'].length > 0) {
+                var urlData = current['url-data']
+                //replace = with %3D
+                urlData = urlData.replace(/=/g, '%3D');
+                //replace & with %26
+                urlData = urlData.replace(/&/g, '%26');
+                currentURL = "post://" + url + "?" + urlData
 
-            if (double.hasOwnProperty('url-data')) {
-              doubleURL = "post://" + double['url'] + "?" + double['url-data']
-            }
-            doubleURL = "double=" + doubleURL + "%26"
-          } else {
-
-            doubleURL = "post://" + localIP.address() + ":1880/buttons?button%3D" + ip + "%26action%3Ddouble" + "%26"
-          }
-
-        }
-
-        if (data.hasOwnProperty('long')) {
-          if (data.long['url'] != 'wire') {
-            var long = data['long']
-            longURL = "get://" + long['url']
-
-            if (long.hasOwnProperty('url-data')) {
-              longURL = "post://" + long['url'] + "?" + long['url-data']
-            }
-            longURL = "long=" + longURL + "%26"
-          } else {
-
-            longURL = "post://" + localIP.address() + ":1880/buttons?button%3D" + ip + "%26action%3Dsingle" + "%26"
-            //TODO ADD &
-          }
-
-        }
-
-        /*  if (data.hasOwnProperty('touch')) {
-
-            if (data.touch['url'] != 'wire') {
-              var touch = data['touch']
-              touchURL = "get://" + touch['url']
-
-              if (touch.hasOwnProperty('url-data')) {
-                touchURL = "post://" + touch['url'] + "?" + touch['url-data']
               }
-              touchURL = "touch" + touchURL
             } else {
-
-              touchURL = "post://" + localIP.address() + "/buttons?button=" + ip + "&action=single"
+              //CHANGE MIDDLE IP
+              currentURL = "post://" + this.getHostIp() + ":1880/buttons?mac%3D" + mac.toUpperCase() + "%26action%3D" + buttonInteractions.indexOf(action)
             }
-
-          }*/
-
-
-        //remove trailing "&"
-        resolvedData = ("single=" + singleURL /*+ "double=" + doubleURL + "long=" + longURL + "touch=" + touchURL*/ ).replace(/(^%26)|(%26$)/, "")
+            var url = action + "=" + currentURL
+            settingURLs.push(url)
+          }
+        }
+        resolvedData = settingURLs.join("&")
 
         resolvedPath += "/api/v1/device/" + formatMac(mac)
 

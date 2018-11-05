@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  RED.nodes.registerType('myStrom Config Strip', {
+  RED.nodes.registerType('myStrom Config Button Plus', {
     category: 'config',
     defaults: {
       host: {
@@ -32,7 +32,7 @@
 
 
         for (var device of data) {
-          if (device.type == "strip") {
+          if (device.type == "buttonplus") {
             //Currently selected device
             if (ip.value != "" && mac.value != "" && name.value != "") {
               prefix = '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
@@ -52,10 +52,10 @@
   });
 </script>
 
-<script type="text/x-red" data-template-name="myStrom Config Strip">
+<script type="text/x-red" data-template-name="myStrom Config Button Plus">
   <div class="form-row">
     <label for="node-config-input-name"><i class="icon-bookmark"></i> Name</label>
-    <input type="text" placeholder="Strip" id="node-config-input-name">
+    <input type="text" placeholder="Button" id="node-config-input-name">
   </div>
   <div class="form-row">
     <label for="node-config-input-host"><i class="icon-bookmark"></i> IP</label>
@@ -66,22 +66,22 @@
     <input type="text" placeholder="00:00:00:00:00:00" id="node-config-input-mac">
   </div>
 
-  <h5> Discovered Light Strips</h5>
+  <h5> Discovered Button Plus</h5>
   <div class="form-row">
     <label for="node-input-discovered"><i class="fa fa-refresh"></i> Selection </label>
-    <select type="text" id="node-input-discovered" onchange="changedStrip(value)">
+    <select type="text" id="node-input-discovered" onchange="changedButtonPlus(value)">
     </select>
   </div>
 </script>
 
 
 <script type="text/javascript">
-  function changedStrip(value) {
-    refreshStrip(value);
-    setDeviceStrip(value);
+  function changedButtonPlus(value) {
+    refreshButtonPlus(value);
+    setDeviceButtonPlus(value);
   };
 
-  function refreshStrip(selection) {
+  function refreshButtonPlus(selection) {
     var select = document.getElementById("node-input-discovered");
 
     var prefix = "";
@@ -89,7 +89,7 @@
 
     $.getJSON('/devices/list', function(data) {
       for (var device of data) {
-        if (device.type == "strip") {
+        if (device.type == "buttonplus") {
           if (device.mac == selection) {
             prefix = '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
           } else {
@@ -101,12 +101,13 @@
     });
   };
 
-  function setDeviceStrip(selection) {
+  function setDeviceButtonPlus(selection) {
 
     var ip = document.getElementById("node-config-input-host");
     var mac = document.getElementById("node-config-input-mac");
     var name = document.getElementById("node-config-input-name");
 
+    //Correct device is selected, insert into fields
     if (selection != "manual" && selection != "refresh" && selection != undefined) {
       $.getJSON('/devices/list', function(data) {
         for (var device of data) {
