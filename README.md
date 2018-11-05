@@ -25,7 +25,7 @@ Please report all bugs through the Github issues page. Your help is greatly appr
 All devices can be controlled in two ways.
 
   1. Give a valid JSON payload as input. What is needed for a valid input can be seen under Usage.
-  2. By specifing the wished function with via the property editor. This is the easier option and is recommended for newer users. **If this option is chosen you can disregard the Usage section
+  2. By specifing the wished function with via the property editor. This is the easier option and is recommended for newer users. *If this option is chosen you can disregard the Usage section*
 
 If both options are available i.e. (a valid JSON gets sent as input to a myStrom node which was already been setup with the property editor) the JSON input will be executed. This means **JSON takes precedence over the property editor**.
 
@@ -39,6 +39,7 @@ Also make sure that you can listen on port 7979 on your node-red host since othe
 
 Device on your network are automatically discovered on start up. You will see a warning message for each discovered device in your debug panel. Fear not this is not an actual warning but rather an information for the user. The devices detected can be selected in the dropdown menus when specifying which device to use through the property editor of a myStrom node. Note: Buttons will only be discovered in configuration mode. See the section [Buttons](#buttons) for further info.
 
+---
 
 ### Nodes
 
@@ -47,8 +48,6 @@ Device on your network are automatically discovered on start up. You will see a 
 - [myStrom Light Strip](#mystrom-light-strip)
 - [myStrom Button](#mystrom-button)
 - [myStrom Button+](#mystrom-buttonplus)
-
----
 
 ### Usage
 Every request has to contain the following:
