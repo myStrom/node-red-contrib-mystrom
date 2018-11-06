@@ -12,7 +12,6 @@ module.exports = {
     pathResolved = resolvedArray[0]
     dataResolved = resolvedArray[1]
 
-
     var http = require('http');
     var body = '';
     var options = {
