@@ -19,7 +19,11 @@ module.exports = function(RED) {
       require('../utils/helpers').setupNodeMacPairs(node)
       var taskJSON = msg["payload"]
 
-      this.status({ fill: "blue", shape: "ring", text: "Using json" });
+      this.status({
+        fill: "blue",
+        shape: "ring",
+        text: "Using json"
+      });
 
       if (!requests.isValid(taskJSON, this.DEVICE_TYPE)) {
 
@@ -27,16 +31,37 @@ module.exports = function(RED) {
           'ip': this.device.host,
           'mac': this.device.mac,
           'request': config.request,
-          'data': { 'single': { 'url': config.singleURL, 'url-data': config.singleData }, 'double': { 'url': config.doubleURL, 'url-data': config.doubleData }, 'long': { 'url': config.longURL, 'url-data': config.longData }, 'touch': { 'url': config.touchURL, 'url-data': config.touchData } }
+          'data': {
+            'single': {
+              'url': config.singleURL,
+              'url-data': config.singleData
+            },
+            'double': {
+              'url': config.doubleURL,
+              'url-data': config.doubleData
+            },
+            'long': {
+              'url': config.longURL,
+              'url-data': config.longData
+            },
+            'touch': {
+              'url': config.touchURL,
+              'url-data': config.touchData
+            }
+          }
         }
-        this.status({ fill: "yellow", shape: "ring", text: "Using property" });
+        this.status({
+          fill: "yellow",
+          shape: "ring",
+          text: "Using property"
+        });
 
         if (!requests.isValid(taskJSON, this.DEVICE_TYPE)) {
           node.error("Conversion from property to json failed")
         }
       }
 
-      console.log(taskJSON);
+
       helpers.setupWiredListFromJSON(taskJSON, node)
       helpers.setupNodeMacPairs(node)
       requests.doAsync(back, this.DEVICE_TYPE, taskJSON, node)
@@ -48,7 +73,9 @@ module.exports = function(RED) {
       if (str["success"] == "false") {
         node.error("An error occured while sending")
       }
-      node.send({ payload: str });
+      node.send({
+        payload: str
+      });
     }
 
     //CLOSE
@@ -59,8 +86,10 @@ module.exports = function(RED) {
 
 
   RED.httpAdmin.post("/buttons", function(req, res) {
+
     var request = require('../utils/requests')
     req = req.body
+
     var DEVICE_TYPE = 'button'
     res.json(request.handleRequest(req, DEVICE_TYPE))
   });

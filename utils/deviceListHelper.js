@@ -54,7 +54,10 @@ module.exports = {
       if (Object.keys(known).indexOf(mac) < 0) {
         deviceList.push(device)
         helpers.setDeviceList(deviceList)
-        node.warn(`Discvoered: ${name}@${ip} with ${mac}`)
+        if (typeof node != undefined) {
+          node.warn(`Discovered: ${name}@${ip} with ${mac}`)
+        }
+
       }
     })
 
