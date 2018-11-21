@@ -150,6 +150,114 @@
 </script>
 
 
-<script type="text/x-red " data-help-name="myStrom Button ">
-  <p>A node to control myStrom Button</p>
+<script type="text/x-red " data-help-name="myStrom Button">
+  <h4><a id="myStrom_Button_1"></a>myStrom Button</h4>
+  <p><img src="misc/preview-button.png" alt=""></p>
+  <p>Set the address to which the button should send a request for each button click or use the button click as input into node-RED.</p>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th style="text-align:left">Valid requests</th>
+        <th style="text-align:left">Type</th>
+        <th style="text-align:left">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:left"><code>set</code></td>
+        <td style="text-align:left">string</td>
+        <td style="text-align:left">Set the addresses the button should send requests to</td>
+      </tr>
+      <tr>
+        <td style="text-align:left"><code>report</code></td>
+        <td style="text-align:left">string</td>
+        <td style="text-align:left">Gets info from the button. (Button has to be in configuration mode)</td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th style="text-align:left">Valid data</th>
+        <th style="text-align:left">Type</th>
+        <th style="text-align:left">For request</th>
+        <th style="text-align:left">Format</th>
+        <th style="text-align:left">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:left"><code>single</code></td>
+        <td style="text-align:left">array</td>
+        <td style="text-align:left"><code>set</code> (optional)</td>
+        <td style="text-align:left">See Valid action below</td>
+        <td style="text-align:left">Specifies the url and data the button should send the request to.</td>
+      </tr>
+      <tr>
+        <td style="text-align:left"><code>double</code></td>
+        <td style="text-align:left">array</td>
+        <td style="text-align:left"><code>set</code> (optional)</td>
+        <td style="text-align:left">See Valid action below</td>
+        <td style="text-align:left">Specifies the url and data the button should send the request to.</td>
+      </tr>
+      <tr>
+        <td style="text-align:left"><code>long</code></td>
+        <td style="text-align:left">array</td>
+        <td style="text-align:left"><code>set</code> (optional)</td>
+        <td style="text-align:left">See Valid action below</td>
+        <td style="text-align:left">Specifies the url and data the button should send the request to.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Not all of these parameters have to be specified all the time. You can have 1 or all of them. It does not matter.</p>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th style="text-align:left">Valid action</th>
+        <th style="text-align:left">Type</th>
+        <th style="text-align:left">Needed for data</th>
+        <th style="text-align:left">Format</th>
+        <th style="text-align:left">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:left"><code>url</code></td>
+        <td style="text-align:left">string</td>
+        <td style="text-align:left"><code>single</code>,<code>double</code>,<code>long</code>,<code>touch</code></td>
+        <td style="text-align:left">&lt;ip address&gt; or &lt; ip address &gt;:&lt; port &gt;</td>
+        <td style="text-align:left">Specifies the url and port to which the request should be sent</td>
+      </tr>
+      <tr>
+        <td style="text-align:left"><code>url-data</code></td>
+        <td style="text-align:left">string</td>
+        <td style="text-align:left"><code>single</code>,<code>double</code>,<code>long</code>,<code>touch</code> (optional)</td>
+        <td style="text-align:left">key1=value1&amp;key2=value2&amp;…</td>
+        <td style="text-align:left">Specifies the data that should be sent to the address</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5><a id="Examples_25"></a>Examples:</h5>
+  <p>Set single click to wire output, send get request to <a href="http://google.com">google.com</a> with double click and send post request to 192.168.1.2 on port 9000 with data foo1=bar1&amp;foo2=bar2 on long click:</p>
+  <pre><code>{
+  &quot;ip&quot;: &quot;192.168.1.122&quot;,
+  &quot;mac&quot;: &quot;5C:CF:7F:CB:A9:AA&quot;,
+  &quot;request&quot;: &quot;set&quot;,
+  &quot;data&quot;: {
+    &quot;single&quot;: {
+      &quot;url&quot;: &quot;wire&quot;,
+      &quot;url-data&quot;: &quot;&quot;
+    },
+    &quot;double&quot;: {
+      &quot;url&quot;: &quot;wire&quot;,
+      &quot;url-data&quot;: &quot;&quot;
+    },
+    &quot;long&quot;: {
+      &quot;url&quot;: &quot;192.168.1.2:9000&quot;,
+      &quot;url-data&quot;: &quot;foo1=bar1&amp;foo2=bar2&quot;
+    }
+  }
+}
+</code></pre>
+  <p>The api documentatino of the Button+ can be found <a href="https://mystrom.ch/wp-content/uploads/REST_API_WBP-4.txt" title="myStrom Button strip">here.</a></p>
 </script>

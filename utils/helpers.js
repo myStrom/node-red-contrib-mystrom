@@ -1,4 +1,3 @@
-var localIP = require("ip");
 var typeList = ["switch", "bulb", "buttonplus", "button", "strip"]
 var buttonInteractions = ["single", "double", "long", "touch"]
 var deviceList = [] //array of mac addresses which are already registerType
@@ -6,6 +5,9 @@ var nodeForMac = []
 var listenerState = false
 
 module.exports = {
+  insert: function(str, index, value) {
+    return str.substr(0, index) + value + str.substr(index);
+  },
 
   getHostIp: function() {
     var os = require('os');
@@ -22,6 +24,7 @@ module.exports = {
   },
 
   setupWiredListFromJSON: function(taskJSON, node) {
+
     //get actions array for wiredList
     var actions = [taskJSON.data.single['url'], taskJSON.data.double['url'], taskJSON.data.long['url'], taskJSON.data.touch['url']]
     actions = actions.map((value, index, array) => {
@@ -45,7 +48,11 @@ module.exports = {
 
     //if does not already exist (i.e. loop iterated until end)
     if (i == buttonList.length || (i == 0 && buttonList.length == 0)) {
-      buttonList.push({ 'mac': taskJSON.mac, 'nodeID': node.id, 'actions': actions })
+      buttonList.push({
+        'mac': taskJSON.mac,
+        'nodeID': node.id,
+        'actions': actions
+      })
     }
 
     this.setWiredList(buttonList)
@@ -80,11 +87,17 @@ module.exports = {
   },
 
   setWiredList: function(list) {
+
     fs = require('fs');
     var path = __dirname + '/wiredlist.json'
-    fs.writeFileSync(path, JSON.stringify(list), function(err) {
-      if (err) return console.log(err);
-    });
+
+    try {
+      fs.writeFileSync(path, JSON.stringify(list));
+    } catch (err) {
+      console.log('Error writing Metadata.json:' + err.message)
+    }
+
+
   },
   getListernerState: function() {
     return listenerState;
@@ -226,9 +239,15 @@ module.exports = {
   messageToJson: function(resp) {
     var ret;
     if (resp != '') {
-      ret = { success: "true", response: resp };
+      ret = {
+        success: "true",
+        response: resp
+      };
     } else {
-      ret = { success: "false", response: "You might get this message falsely with the myStrom Swithc sometimes" };
+      ret = {
+        success: "false",
+        response: "You might get this message falsely with the myStrom Swithc sometimes"
+      };
     }
     return ret
   },

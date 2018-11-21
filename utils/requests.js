@@ -12,7 +12,6 @@ module.exports = {
     pathResolved = resolvedArray[0]
     dataResolved = resolvedArray[1]
 
-
     var http = require('http');
     var body = '';
     var options = {
@@ -166,15 +165,22 @@ module.exports = {
     //check if wire
     if (req.hasOwnProperty('mac') && req.hasOwnProperty('action')) {
       var buttonList = helpers.getWiredList()
+
       for (var button of buttonList) {
 
         if (!isNaN(req.action) && parseInt(req.action) < buttonActions.length && button.actions[req.action] && button.mac == req.mac) {
 
 
           var messages = new Array(buttonActions.length + 1).fill(null)
-          messages[req.action + 1] = { 'payload': true }
+          var index = parseInt(req.action) + 1
+
+          messages[index] = {
+            'payload': true
+          }
+
 
           var node = helpers.getNodeForMac()[req.mac]
+
           node.send(messages)
           return "executed successfully"
           break

@@ -86,5 +86,88 @@
 </script>
 
 <script type="text/x-red" data-help-name="myStrom Bulb">
-  <p>A node to control myStrom Bulbs</p>
+  <h4><a id="myStrom_Bulb_1"></a>myStrom Bulb</h4>
+  <p><img src="misc/preview-bulb.png" alt=""></p>
+  <p>Change the state of the bulb, change the colour and set the speed (ramp) of the transition</p>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th style="text-align:left">Valid requests</th>
+        <th style="text-align:left">Type</th>
+        <th style="text-align:left">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:left"><code>on</code></td>
+        <td style="text-align:left">string</td>
+        <td style="text-align:left">Turns the bulb on</td>
+      </tr>
+      <tr>
+        <td style="text-align:left"><code>off</code></td>
+        <td style="text-align:left">string</td>
+        <td style="text-align:left">Turns the bulb off</td>
+      </tr>
+      <tr>
+        <td style="text-align:left"><code>toggle</code></td>
+        <td style="text-align:left">string</td>
+        <td style="text-align:left">toggles the bulb</td>
+      </tr>
+      <tr>
+        <td style="text-align:left"><code>report</code></td>
+        <td style="text-align:left">string</td>
+        <td style="text-align:left">Get diagnostic information</td>
+      </tr>
+      <tr>
+        <td style="text-align:left"><code>color</code></td>
+        <td style="text-align:left">string</td>
+        <td style="text-align:left"><em>Needs additional data array</em>. See below for specification</td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th style="text-align:left">Valid data</th>
+        <th style="text-align:left">Type</th>
+        <th style="text-align:left">Need for request</th>
+        <th style="text-align:left">Format</th>
+        <th style="text-align:left">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:left"><code>color</code></td>
+        <td style="text-align:left">string</td>
+        <td style="text-align:left"><code>color</code></td>
+        <td style="text-align:left">Must be in RGBW format and start with a ‘#’</td>
+        <td style="text-align:left">Specifies the color which the bulb should be set to. Only used if the request is set to color.</td>
+      </tr>
+      <tr>
+        <td style="text-align:left"><code>ramp</code></td>
+        <td style="text-align:left">int</td>
+        <td style="text-align:left"><code>color</code></td>
+        <td style="text-align:left">Must be a positive number.</td>
+        <td style="text-align:left">Specify the transition time in miliseconds.</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5><a id="Examples_20"></a>Examples:</h5>
+  <p>To turn the bulb on:</p>
+  <pre><code>{ &quot;ip&quot;: &quot;192.168.1.00&quot;,
+  &quot;mac&quot;: &quot;00:00:00:00:00:00&quot;
+  &quot;request&quot;:  &quot;on&quot;
+}
+</code></pre>
+  <p>To turn the bulb red with a slow transition:</p>
+  <pre><code>{ &quot;ip&quot;: &quot;192.168.1.00&quot;,
+  &quot;mac&quot;: &quot;00:00:00:00:00:00&quot;
+  &quot;request&quot;:  &quot;color&quot;,
+  &quot;data&quot;: {
+    &quot;color&quot;: &quot;#ff000000&quot;,
+    &quot;ramp&quot;: &quot;1000&quot;
+  }
+}
+</code></pre>
+  <p>The api documentatino of the bulb can be found <a href="https://mystrom.ch/wp-content/uploads/REST_API_WRB-2.txt" title="myStrom Bulb">here.</a></p>
 </script>

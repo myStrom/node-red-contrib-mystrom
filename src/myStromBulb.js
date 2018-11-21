@@ -16,12 +16,28 @@ module.exports = function(RED) {
       var taskJSON = msg["payload"]
 
 
-      this.status({ fill: "blue", shape: "ring", text: "Using json" });
+      this.status({
+        fill: "blue",
+        shape: "ring",
+        text: "Using json"
+      });
 
       if (!requests.isValid(taskJSON, this.DEVICE_TYPE)) {
-        taskJSON = { "ip": this.device.host, "mac": this.device.mac, "request": config.request, "data": { "color": config.color, "ramp": config.ramp } }
+        taskJSON = {
+          "ip": this.device.host,
+          "mac": this.device.mac,
+          "request": config.request,
+          "data": {
+            "color": config.color,
+            "ramp": config.ramp
+          }
+        }
 
-        this.status({ fill: "yellow", shape: "ring", text: "Using property" });
+        this.status({
+          fill: "yellow",
+          shape: "ring",
+          text: "Using property"
+        });
 
 
         if (!requests.isValid(taskJSON, this.DEVICE_TYPE)) {
@@ -39,8 +55,12 @@ module.exports = function(RED) {
         node.error("An error occured while sending")
       }
 
-      node.send({ payload: str });
+      node.send({
+        payload: str
+      });
     }
+
+
 
     //CLOSE
     this.on('close', function() {});
