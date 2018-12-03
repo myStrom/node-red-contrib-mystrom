@@ -17,12 +17,6 @@ module.exports = function(RED) {
     //get device list
     var deviceList = helpers.getDeviceList()
 
-    //Start listener if not already running
-    var listenerState = helpers.getListernerState()
-    if (!listenerState) {
-      deviceHelper.deviceListener()
-    }
-
     res.json(deviceList)
   })
 

@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-mystrom",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "myStrom nodes to controll all myStrom devices within Node-RED",
   "author": "Hadjimina",
   "homepage": "https://github.com/myStrom/node-red-contrib-mystrom",

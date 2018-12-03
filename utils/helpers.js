@@ -220,7 +220,10 @@ module.exports = {
               }
             } else {
               //CHANGE MIDDLE IP
-              currentURL = "post://" + this.getHostIp() + ":1880/buttons?mac%3D" + mac.toUpperCase() + "%26action%3D" + buttonInteractions.indexOf(action)
+
+              var offSet = data.hasOwnProperty("urlOffset") ? data["urlOffset"] : ":1880"
+
+              currentURL = "post://" + this.getHostIp() + offSet + "/buttons?mac%3D" + mac.toUpperCase() + "%26action%3D" + buttonInteractions.indexOf(action)
             }
             var url = action + "=" + currentURL
             settingURLs.push(url)

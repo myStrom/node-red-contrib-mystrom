@@ -15,9 +15,40 @@
 
 ### Installation
 
+#### Installation on Node-RED
+
 myStrom-Node-RED was written in **Node.js** v4.2.6 and tested on Node-RED v0.19.4.
 
-To use it execute `npm install node-red-contrib-mystrom`.
+To use it execute `npm install node-red-contrib-mystrom` or use the node-RED interface by accessing Node-RED web ui -> top right menu -> "manage palette"->"install"-> serach for "node-red-contrib-mystrom"
+
+#### Integration of Node-RED with existing tools
+
+- [General](#general)
+- [Homeassistant](#homeassistant)
+- [Loxone](#loxone)
+- [openHAB](#openHAB)
+- [Homematic](#Homematic)
+
+#### General
+
+1.  Check
+2.  Install node-RED as described [here](https://nodered.org/docs/getting-started/installation)
+3.  Install
+
+##### Homeassistant
+
+1.  Install Homeassistant any way you like
+2.  Install node-red (e.g. by using the software store when you are using hass.io) and make sure it's running at SERVER_IP:1880
+3.  Install node-red-contrib-mystrom on node-red as explained above
+4.  Done, everything should work
+
+##### Loxone
+
+Installation:
+
+##### openHAB
+
+##### Homematic
 
 ### Bugs
 
@@ -185,17 +216,17 @@ The api documentatino of the light strip can be found [here.](https://mystrom.ch
 
 Everytime the settings of the button have been changed they need to be upladed to the button:
 
-- (Easy) property mode: Simply give the button anything as input (e.g. inject a timestamp) and it will upload the specified data to the button.
+- (Easy) property mode: Simply give the button anything as input (e.g. inject a timestamp) and it will upload the data specified in the property of the node to the button.
 - JSON mode: Give a valid JSON object with the correct properties as input. See examples.
 
-In order to be able to upload data to the button the button has to be in configuration mode **otherwise it will not work**. Note that the buttons will only stay in configuration mode for a few minutes:
+In order to be able to upload data to the button the button has to be in configuration mode **otherwise it will not work**. Note that the buttons will only stay in configuration mode for a few minutes. You get into the configuration mode as follows:
 
 - _Button_: Charging it for a few seconds, detaching in and pressing the it
 - _Button+_: Remove the battery and insert it again. The battery can be accessed by rotating the base of the button (the one with 4 small magnets on it).
 
-You can check that the button is in configuration mode by checking if the device has been popped up as [discovered](#automatic-device-discovery).
+You can check that the button is in configuration mode by checking if the device has popped up as [discovered](#automatic-device-discovery).
 
-Once the buttons have been configured you do not need to reuplade the data everytime you have made changes which nodes you have atteched to the button outputs. Only when you change things in the actual node property you will have to upload it again.
+Once the buttons have been configured you do not need to re-upload to the button everytime you have attached things to the button node outputs. Only when you change things in the actual node property you will have to upload it again.
 
 ##### Using button node outputs
 
@@ -209,10 +240,10 @@ If the address of a button action is set to 'wire' the outputs of the button nod
 
 Set the address to which the button should send a request for each button click or use the button click as input into node-RED.
 
-| Valid requests | Type   | Description                                                         |
-| :------------- | :----- | :------------------------------------------------------------------ |
-| `set`          | string | Set the addresses the button should send requests to                |
-| `report`       | string | Gets info from the button. (Button has to be in configuration mode) |
+| Valid requests | Type   | Description                                                                                   |
+| :------------- | :----- | :-------------------------------------------------------------------------------------------- |
+| `set`          | string | Set the addresses the button should send requests to (Button has to be in configuration mode) |
+| `report`       | string | Gets info from the button. (Button has to be in configuration mode)                           |
 
 | Valid data | Type  | For request      | Format                 | Description                                                       |
 | :--------- | :---- | :--------------- | :--------------------- | :---------------------------------------------------------------- |
@@ -222,10 +253,10 @@ Set the address to which the button should send a request for each button click 
 
 Not all of these parameters have to be specified all the time. You can have 1 or all of them. It does not matter.
 
-| Valid action | Type   | Needed for data                             | Format                                  | Description                                                    |
-| :----------- | :----- | :------------------------------------------ | :-------------------------------------- | :------------------------------------------------------------- |
-| `url`        | string | `single`,`double`,`long`,`touch`            | <ip address> or < ip address >:< port > | Specifies the url and port to which the request should be sent |
-| `url-data`   | string | `single`,`double`,`long`,`touch` (optional) | key1=value1&key2=value2&...             | Specifies the data that should be sent to the address          |
+| Valid action | Type   | Needed for data                             | Format                                    | Description                                                    |
+| :----------- | :----- | :------------------------------------------ | :---------------------------------------- | :------------------------------------------------------------- |
+| `url`        | string | `single`,`double`,`long`,`touch`            | < ip address > or < ip address >:< port > | Specifies the url and port to which the request should be sent |
+| `url-data`   | string | `single`,`double`,`long`,`touch` (optional) | key1=value1&key2=value2&...               | Specifies the data that should be sent to the address          |
 
 ##### Examples:
 
@@ -273,10 +304,10 @@ Set the address to which the button should send a request for each button click 
 
 Not all of these parameters have to be specified all the time. You can have 1 or all of them. It does not matter.
 
-| Valid action | Type   | Needed for data                             | Format                                  | Description                                                    |
-| :----------- | :----- | :------------------------------------------ | :-------------------------------------- | :------------------------------------------------------------- |
-| `url`        | string | `single`,`double`,`long`,`touch`            | <ip address> or < ip address >:< port > | Specifies the url and port to which the request should be sent |
-| `url-data`   | string | `single`,`double`,`long`,`touch` (optional) | key1=value1&key2=value2&...             | Specifies the data that should be sent to the address          |
+| Valid action | Type   | Needed for data                             | Format                                    | Description                                                    |
+| :----------- | :----- | :------------------------------------------ | :---------------------------------------- | :------------------------------------------------------------- |
+| `url`        | string | `single`,`double`,`long`,`touch`            | < ip address > or < ip address >:< port > | Specifies the url and port to which the request should be sent |
+| `url-data`   | string | `single`,`double`,`long`,`touch` (optional) | key1=value1&key2=value2&...               | Specifies the data that should be sent to the address          |
 
 ##### Examples:
 

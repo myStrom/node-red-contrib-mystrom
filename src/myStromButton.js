@@ -50,6 +50,11 @@ module.exports = function(RED) {
             }
           }
         }
+
+        if (config.urlOffset != "" && config.urlOffset != null) {
+          taskJSON.data["urlOffset"] = config.urlOffset
+        }
+
         this.status({
           fill: "yellow",
           shape: "ring",
