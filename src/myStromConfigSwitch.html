@@ -20,34 +20,51 @@
       return this.name + "@" + this.host
     },
     oneditprepare: function() {
-      var selection = document.getElementById("node-input-discovered");
 
-      var options = '<option value=manual> manual </option> <option value=refresh> Refresh devices </option>';
-      var prefix = "";
+      function refreshButtonAndSetIndex() {
+        var select = $("node-config-dropdown");
 
-      $.getJSON('/devices/list', function(data) {
-        var ip = document.getElementById("node-config-input-host");
-        var mac = document.getElementById("node-config-input-mac");
-        var name = document.getElementById("node-config-input-name");
+        $.getJSON('/devices/list', function(data) {
+          var options = ""
+          var prefix = "<option> Select switch... </option>"
 
+          for (var device of data) {
+            if (device.type == "switch") {
+              if (device.mac == $('#node-config-input-mac').val()) {
+                prefix = '<option value=' + device.mac + '>' + device.ip + '</option>';
+              } else {
+                options += '<option value=' + device.mac + '>' + device.ip + '</option>';
+              }
 
-        for (var device of data) {
-          if (device.type == "switch") {
-            //Currently selected device
-            if (ip.value != "" && mac.value != "" && name.value != "") {
-              prefix = '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
-
-              ip.disabled = true;
-              mac.disabled = true;
-              name.disabled = true;
-            } else {
-              //New device
-              options += '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
             }
           }
-        }
-        selection.innerHTML = prefix + options;
+
+          $('#node-config-dropdown').empty().append(prefix + options);
+
+        });
+      };
+
+
+      $('#node-config-scan').click(function() {
+        refreshButtonAndSetIndex()
       });
+
+      $('#node-config-dropdown').change(function(value) {
+        var value = $('#node-config-dropdown').find(":selected").val();
+        console.log(value);
+        $.getJSON('/devices/list', function(data) {
+          for (var device of data) {
+            if (device.mac == value) {
+
+              $('#node-config-input-name').val(device.name)
+              $('#node-config-input-host').val(device.ip)
+              $('#node-config-input-mac').val(device.mac)
+            }
+          }
+        })
+      });
+
+      refreshButtonAndSetIndex()
     }
   });
 </script>
@@ -68,69 +85,15 @@
 
   <h5> Discovered Switches</h5>
   <div class="form-row">
-    <label for="node-input-discovered"><i class="fa fa-refresh"></i> Selection </label>
-    <select type="text" id="node-input-discovered" onchange="changedSwitch(value)">
-    </select>
-  </div>
-</script>
-
-
-<script type="text/javascript">
-  function changedSwitch(value) {
-    refreshSwitch(value);
-    setDeviceSwitch(value);
-  };
-
-  function refreshSwitch(selection) {
-    var select = document.getElementById("node-input-discovered");
-
-    var prefix = "";
-    var options = '<option value=manual> manual </option> <option value=refresh> Refresh devices </option>';
-
-    $.getJSON('/devices/list', function(data) {
-      for (var device of data) {
-        if (device.type == "switch") {
-          if (device.mac == selection) {
-            prefix = '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
-          } else {
-            options += '<option value=' + device.mac + '>' + device.name + '@' + device.ip + '</option>';
-          }
-        }
-      }
-      select.innerHTML = prefix + options;
-    });
-  };
-
-  function setDeviceSwitch(selection) {
-
-    var ip = document.getElementById("node-config-input-host");
-    var mac = document.getElementById("node-config-input-mac");
-    var name = document.getElementById("node-config-input-name");
-
-    //Correct device is selected, insert into fields
-    if (selection != "manual" && selection != "refresh" && selection != undefined) {
-      $.getJSON('/devices/list', function(data) {
-        for (var device of data) {
-          if (device.mac == selection) {
-
-            ip.value = device.ip
-            mac.value = device.mac
-            name.value = device.name
-
-            ip.disabled = true
-            mac.disabled = true
-            name.disabled = true
-
-            break
-          }
-        }
-      });
-    } else if (selection == "manual") {
-      ip.disabled = false
-      mac.disabled = false
-      name.disabled = false
-    }
-
-
-  };
+    <label for="node-config-dropdown"><i class="fa fa-server"></i> Switch </label>
+    <div style="display: inline-block; position: relative; width: 70%; height: 20px;">
+      <div style="position: absolute; left: 0px; right:0px;">
+        <select type="text" id="node-config-dropdown">
+          <option> Select switch... </option>
+        </select>
+      </div>
+      <a id="node-config-scan" class="editor-button" style="position: absolute; right: 0px; top: 0px;">
+              <i class="fa fa-search"></i>
+          </a>
+    </div>
 </script>
