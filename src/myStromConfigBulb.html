@@ -27,26 +27,35 @@
 
       function refreshButtonAndSetIndex() {
         var select = $("node-config-dropdown");
-
-        $.getJSON('/devices/list', function(data) {
-          var options = ""
-          var prefix = "<option> Select bulb... </option>"
-
-          for (var device of data) {
-            if (device.type == "bulb") {
-              if (device.mac == $('#node-config-input-mac').val()) {
-                prefix = '<option value=' + device.mac + '>' + device.ip + '</option>';
-              } else {
-                options += '<option value=' + device.mac + '>' + device.ip + '</option>';
-              }
-
-            }
+        $.getJSON('/devices/list/mystrom', function(data) {
+          if (data != null && data.length != 0) {
+            setDropDown(data)
+            return;
           }
-
-          $('#node-config-dropdown').empty().append(prefix + options);
-
+          $.getJSON('/devices/list/dingz', function(data) {
+            if (data != null && data.length != 0) {
+              setDropDown(data)
+              return;
+            }
+          });
         });
       };
+
+      function setDropDown(data) {
+        var options = ""
+        var prefix = "<option> Select bulb... </option>"
+        for (var device of data) {
+          if (device.type == "bulb") {
+            if (device.mac == $('#node-config-input-mac').val()) {
+              prefix = '<option value=' + device.mac + '>' + device.ip + '</option>';
+            } else {
+              options += '<option value=' + device.mac + '>' + device.ip + '</option>';
+            }
+
+          }
+        }
+        $('#node-config-dropdown').empty().append(prefix + options);
+      }
 
 
       $('#node-config-scan').click(function() {

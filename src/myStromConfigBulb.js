@@ -8,14 +8,13 @@ module.exports = function(RED) {
 
   RED.nodes.registerType("myStrom Config Bulb", myStromConfigBulb);
 
-  RED.httpAdmin.get("/devices/list", function(req, res) {
+  RED.httpAdmin.get("/devices/list/mystrom", function(req, res) {
     var deviceHelper = require("../utils/deviceListHelper");
     var helpers = require("../utils/helpers");
 
     //get device list
     var deviceList = helpers.getDeviceList();
 
-    console.log(deviceList);
     res.json(deviceList);
   });
 };

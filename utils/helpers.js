@@ -106,11 +106,30 @@ module.exports = {
     listenerState = state;
   },
   getDeviceList: function() {
-    return deviceList;
+    if (deviceList == null || deviceList == []) {
+      fs = require("fs");
+      var deviceListNew;
+      var path = __dirname + "/deviceList.json";
+      if (fs.existsSync(path)) {
+        deviceListNew = JSON.parse(fs.readFileSync(path, "utf8"));
+      } else {
+        deviceListNew = [];
+      }
+    }
+
+    return deviceListNew;
   },
 
   setDeviceList: function(list) {
     deviceList = list;
+    fs = require("fs");
+    var path = __dirname + "/deviceList.json";
+
+    try {
+      fs.writeFileSync(path, JSON.stringify(list));
+    } catch (err) {
+      console.log("Error writing Metadata.json:" + err.message);
+    }
   },
 
   //validity has to be checked beforehand

@@ -66,8 +66,9 @@ module.exports = {
       if (helpers.getDevice(mac) == null) {
         deviceList.push(device);
         helpers.setDeviceList(deviceList);
+
         if (typeof node != undefined) {
-          // node.warn(`Discovered: ${name}@${ip} with ${mac}`);
+          node.warn(`Discovered: ${name}@${ip} with ${mac}`);
         }
       }
     });
