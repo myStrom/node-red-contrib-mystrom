@@ -58,19 +58,33 @@
         refreshButtonAndSetIndex()
       });
 
-      $('#node-config-dropdown').change(function(value) {
-        var value = $('#node-config-dropdown').find(":selected").val();
-        console.log(value);
-        $.getJSON('/devices/list', function(data) {
-          for (var device of data) {
-            if (device.mac == value) {
 
-              $('#node-config-input-name').val(device.name)
-              $('#node-config-input-host').val(device.ip)
-              $('#node-config-input-mac').val(device.mac)
-            }
+      function setSelection(data, value) {
+        for (var device of data) {
+          if (device.mac == value) {
+
+            $('#node-config-input-name').val(device.name)
+            $('#node-config-input-host').val(device.ip)
+            $('#node-config-input-mac').val(device.mac)
           }
-        })
+        }
+      }
+
+      $('#node-config-dropdown').change(function(value) {
+        var val = $('#node-config-dropdown').find(":selected").val();
+
+        $.getJSON('/devices/list/mystrom', function(data) {
+          if (data != null && data.length != 0) {
+            setSelection(data, val)
+            return;
+          }
+          $.getJSON('/devices/list/dingz', function(data) {
+            if (data != null && data.length != 0) {
+              setSelection(data, val)
+              return;
+            }
+          });
+        });
       });
 
       refreshButtonAndSetIndex()

@@ -1,4 +1,4 @@
-var typeList = ["switch", "bulb", "buttonplus", "button", "strip"];
+var typeList = ["switch", "bulb", "buttonplus", "button", "strip", "dingz"];
 var buttonInteractions = ["single", "double", "long", "touch"];
 var deviceList = []; //array of mac addresses which are already registerType
 var nodeForMac = [];
@@ -106,9 +106,9 @@ module.exports = {
     listenerState = state;
   },
   getDeviceList: function() {
-    if (deviceList == null || deviceList == []) {
+    var deviceListNew = deviceList;
+    if (deviceListNew == null || deviceListNew == []) {
       fs = require("fs");
-      var deviceListNew;
       var path = __dirname + "/deviceList.json";
       if (fs.existsSync(path)) {
         deviceListNew = JSON.parse(fs.readFileSync(path, "utf8"));
