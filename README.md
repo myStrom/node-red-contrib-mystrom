@@ -21,35 +21,6 @@ myStrom-Node-RED was written in **Node.js** v4.2.6 and tested on Node-RED v0.19.
 
 To use it execute `npm install node-red-contrib-mystrom` or use the node-RED interface by accessing Node-RED web ui -> top right menu -> "manage palette"->"install"-> serach for "node-red-contrib-mystrom"
 
-#### Integration of Node-RED with existing tools
-
-- [General](#general)
-- [Homeassistant](#homeassistant)
-- [Loxone](#loxone)
-- [openHAB](#openHAB)
-- [Homematic](#Homematic)
-
-#### General
-
-1.  Check
-2.  Install node-RED as described [here](https://nodered.org/docs/getting-started/installation)
-3.  Install
-
-##### Homeassistant
-
-1.  Install Homeassistant any way you like
-2.  Install node-red (e.g. by using the software store when you are using hass.io) and make sure it's running at SERVER_IP:1880
-3.  Install node-red-contrib-mystrom on node-red as explained above
-4.  Done, everything should work
-
-##### Loxone
-
-Installation:
-
-##### openHAB
-
-##### Homematic
-
 ### Bugs
 
 Please report all bugs through the Github issues page. Your help is greatly appreciated.

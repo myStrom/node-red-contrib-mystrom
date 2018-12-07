@@ -238,8 +238,6 @@ module.exports = {
                 currentURL = "post://" + url + "?" + urlData;
               }
             } else {
-              //CHANGE MIDDLE IP
-
               var offSet = data.hasOwnProperty("urlOffset")
                 ? data["urlOffset"]
                 : ":1880";
