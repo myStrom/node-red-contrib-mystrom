@@ -15,32 +15,27 @@ module.exports = function(RED) {
     //EXECUTE REQUEST
     this.on("input", function(msg) {
       require("../utils/helpers").setupNodeMacPairs(node);
-      var taskJSON = msg["payload"];
 
-      this.status({ fill: "blue", shape: "ring", text: "Using json" });
+      taskJSON = {
+        ip: this.device.host,
+        mac: this.device.mac,
+        request: config.request,
+        data: {
+          single: { url: config.singleURL, "url-data": config.singleData },
+          double: { url: config.doubleURL, "url-data": config.doubleData },
+          long: { url: config.longURL, "url-data": config.longData },
+          touch: { url: config.touchURL, "url-data": config.touchData }
+        }
+      };
+
+      if (config.urlOffset != "" && config.urlOffset != null) {
+        taskJSON.data["urlOffset"] = config.urlOffset;
+      }
+
+      this.status({ fill: "yellow", shape: "ring", text: "Using property" });
 
       if (!requests.isValid(taskJSON, this.DEVICE_TYPE)) {
-        taskJSON = {
-          ip: this.device.host,
-          mac: this.device.mac,
-          request: config.request,
-          data: {
-            single: { url: config.singleURL, "url-data": config.singleData },
-            double: { url: config.doubleURL, "url-data": config.doubleData },
-            long: { url: config.longURL, "url-data": config.longData },
-            touch: { url: config.touchURL, "url-data": config.touchData }
-          }
-        };
-
-        if (config.urlOffset != "" && config.urlOffset != null) {
-          taskJSON.data["urlOffset"] = config.urlOffset;
-        }
-
-        this.status({ fill: "yellow", shape: "ring", text: "Using property" });
-
-        if (!requests.isValid(taskJSON, this.DEVICE_TYPE)) {
-          node.error("Conversion from property to json failed");
-        }
+        node.error("Conversion from property to json failed");
       }
 
       helpers.setupWiredListFromJSON(taskJSON, node);

@@ -37,7 +37,7 @@ Please report all bugs through the Github issues page. Your help is greatly appr
 
 Usage:
 
-1.  Select the device in the properties of the node. If a switch has been detected you can automatically select it, otherwise you can manually specifiy a mac and ip address.
+1.  Select the device in the properties of the node. If a switch has been detected you can automatically select it, otherwise you can manually specify a mac and ip address.
 2.  Specify which action should be executed when the node is triggered.
 3.  The node will be triggered once it receives any kind of input.
 
@@ -46,11 +46,11 @@ Usage:
 Usage:
 
 1.  Make sure your devices are in the configuration mode.
-    - Button: Connect the button to a power source with the provided usb cable. After some minutes it should become visible in the network
+    - Button: Connect the button to a power source with the provided USB cable. After some minutes it should become visible in the network
     - Button+: Open the back of the button up by turning it. Remove the batteries and reinsert them. The button should now be visible.
 2.  Select whether you want to specify the button actions or get information about the button by using the dropdown menu in the node properties.
 3.  Specify the ip address and data you would like to send. If you only want use the button nodes output enter "wire" in the address field and leave the data field blank.
 4.  Connect your other nodes and services you would like to trigger to the nodes outputs. Keep in mind that the first node output port is reserved for the "report" action and will only receive data if you have specified "report" as your request.
-5.  Connect an inject node to the button input port. Once you have sent any kind of data to the button input node, the data you have specified in the button node will be uploaded to the button at the specified ip address. Your button is now ready to be used with node-RED! Quick hint: You only need to reupload the data if you have changed something in the button node. If you change what have attached to the output ports or connect/disconnect nodes from these ports, you do not have to upload it again.
+5.  Press the button on the left side of the button node to upload your configuration to the button. You only need to reupload the data if you have changed something within the button node. If you change what you have attached to the output ports or connect/disconnect nodes from these ports, you do not have to upload it again.
 
-For an advacned user guide on how to use the mystrom nodes see [here](ADVANCED.md)
+For an advanced user guide on how to use the myStrom nodes see [here](ADVANCED.md)

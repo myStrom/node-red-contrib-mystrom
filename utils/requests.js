@@ -11,8 +11,6 @@ module.exports = {
     pathResolved = resolvedArray[0];
     dataResolved = resolvedArray[1];
 
-    console.log(pathResolved);
-    console.log(dataResolved);
     var http = require("http");
     var body = "";
     var options = {
