@@ -53,4 +53,4 @@ Usage:
 4.  Connect your other nodes and services you would like to trigger to the nodes outputs. Keep in mind that the first node output port is reserved for the "report" action and will only receive data if you have specified "report" as your request.
 5.  Connect an inject node to the button input port. Once you have sent any kind of data to the button input node, the data you have specified in the button node will be uploaded to the button at the specified ip address. Your button is now ready to be used with node-RED! Quick hint: You only need to reupload the data if you have changed something in the button node. If you change what have attached to the output ports or connect/disconnect nodes from these ports, you do not have to upload it again.
 
-For an advacned user guide on how to use the mystrom nodes see [here](ADVACNED.md)
+For an advacned user guide on how to use the mystrom nodes see [here](ADVANCED.md)
