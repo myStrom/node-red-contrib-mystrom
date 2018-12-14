@@ -2,10 +2,10 @@
 
 ## Execution
 
-All devices can be controlled in two ways.
+Some devices can be controlled in two ways. That is all except for the buttons.
 
 1.  Give a valid JSON payload as input. What is needed for a valid input can be seen under Usage.
-2.  By specifing the wished function with via the property editor. This is the easier option and is recommended for newer users. _If this option is chosen you can disregard the Usage section_
+2.  By speciying the wished function with via the property editor. This is the easier option and is recommended for newer users. _If this option is chosen you can disregard the Usage section_
 
 If both options are available i.e. (a valid JSON gets sent as input to a myStrom node which has already been setup with the property editor) the JSON input will be executed. This means **JSON takes precedence over the property editor**.
 
@@ -145,7 +145,6 @@ The api documentatino of the light strip can be found [here.](https://mystrom.ch
 Everytime the settings of the button have been changed they need to be upladed to the button:
 
 - (Easy) property mode: Simply give the button anything as input (e.g. inject a timestamp) and it will upload the data specified in the property of the node to the button.
-- JSON mode: Give a valid JSON object with the correct properties as input. See examples.
 
 In order to be able to upload data to the button the button has to be in configuration mode **otherwise it will not work**. Note that the buttons will only stay in configuration mode for a few minutes. You get into the configuration mode as follows:
 
@@ -161,108 +160,3 @@ Once the buttons have been configured you do not need to re-upload to the button
 ![](misc/output-highlight.png)
 
 If the address of a button action is set to 'wire' the outputs of the button node will output the message 'success'. The first node output however is always reserved for the 'report' action. This means that, if the 'Single click' address is set to 'wire', the second output will get the message 'success'. For 'Double click' the third output will get it, for 'Long click' the forth and for 'Touch' the fifth.
-
-#### myStrom Button
-
-![](misc/preview-button.png)
-
-Set the address to which the button should send a request for each button click or use the button click as input into node-RED.
-
-| Valid requests | Type   | Description                                                                                   |
-| :------------- | :----- | :-------------------------------------------------------------------------------------------- |
-| `set`          | string | Set the addresses the button should send requests to (Button has to be in configuration mode) |
-| `report`       | string | Gets info from the button. (Button has to be in configuration mode)                           |
-
-| Valid data | Type  | For request      | Format                 | Description                                                       |
-| :--------- | :---- | :--------------- | :--------------------- | :---------------------------------------------------------------- |
-| `single`   | array | `set` (optional) | See Valid action below | Specifies the url and data the button should send the request to. |
-| `double`   | array | `set` (optional) | See Valid action below | Specifies the url and data the button should send the request to. |
-| `long`     | array | `set` (optional) | See Valid action below | Specifies the url and data the button should send the request to. |
-
-Not all of these parameters have to be specified all the time. You can have 1 or all of them. It does not matter.
-
-| Valid action | Type   | Needed for data                             | Format                                    | Description                                                    |
-| :----------- | :----- | :------------------------------------------ | :---------------------------------------- | :------------------------------------------------------------- |
-| `url`        | string | `single`,`double`,`long`,`touch`            | < ip address > or < ip address >:< port > | Specifies the url and port to which the request should be sent |
-| `url-data`   | string | `single`,`double`,`long`,`touch` (optional) | key1=value1&key2=value2&...               | Specifies the data that should be sent to the address          |
-
-##### Examples:
-
-Set single click to wire output, send get request to google.com with double click and send post request to 192.168.1.2 on port 9000 with data foo1=bar1&foo2=bar2 on long click:
-
-    {
-      "ip": "192.168.1.122",
-      "mac": "5C:CF:7F:CB:A9:AA",
-      "request": "set",
-      "data": {
-        "single": {
-          "url": "wire",
-          "url-data": ""
-        },
-        "double": {
-          "url": "wire",
-          "url-data": ""
-        },
-        "long": {
-          "url": "192.168.1.2:9000",
-          "url-data": "foo1=bar1&foo2=bar2"
-        }
-      }
-    }
-
-The api documentatino of the Button+ can be found [here.](https://mystrom.ch/wp-content/uploads/REST_API_WBP-4.txt "myStrom Button strip")
-
-#### myStrom Button +
-
-![](misc/preview-buttonplus.png)
-
-Set the address to which the button should send a request for each button click or use the button click as input into node-RED.
-
-| Valid requests | Type   | Description                                                         |
-| :------------- | :----- | :------------------------------------------------------------------ |
-| `set`          | string | Set the addresses the button should send requests to                |
-| `report`       | string | Gets info from the button. (Button has to be in configuration mode) |
-
-| Valid data | Type  | For request      | Format                 | Description                                                       |
-| :--------- | :---- | :--------------- | :--------------------- | :---------------------------------------------------------------- |
-| `single`   | array | `set` (optional) | See Valid action below | Specifies the url and data the button should send the request to. |
-| `double`   | array | `set` (optional) | See Valid action below | Specifies the url and data the button should send the request to. |
-| `long`     | array | `set` (optional) | See Valid action below | Specifies the url and data the button should send the request to. |
-| `touch`    | array | `set` (optional) | See Valid action below | Specifies the url and data the button should send the request to. |
-
-Not all of these parameters have to be specified all the time. You can have 1 or all of them. It does not matter.
-
-| Valid action | Type   | Needed for data                             | Format                                    | Description                                                    |
-| :----------- | :----- | :------------------------------------------ | :---------------------------------------- | :------------------------------------------------------------- |
-| `url`        | string | `single`,`double`,`long`,`touch`            | < ip address > or < ip address >:< port > | Specifies the url and port to which the request should be sent |
-| `url-data`   | string | `single`,`double`,`long`,`touch` (optional) | key1=value1&key2=value2&...               | Specifies the data that should be sent to the address          |
-
-##### Examples:
-
-Set single and double click to wire output, send get request to google.com with long click and send post request to 192.168.1.2 on port 9000 with data foo1=bar1&foo2=bar2 on touch:
-
-    {
-      "ip": "192.168.1.122",
-      "mac": "5C:CF:7F:CB:A9:AA",
-      "request": "set",
-      "data": {
-        "single": {
-          "url": "wire",
-          "url-data": ""
-        },
-        "double": {
-          "url": "wire",
-          "url-data": ""
-        },
-        "long": {
-          "url": "https://google.com",
-          "url-data": ""
-        },
-        "touch": {
-          "url": "192.168.1.2:9000",
-          "url-data": "foo1=bar1&foo2=bar2"
-        }
-      }
-    }
-
-The api documentatino of the Button+ can be found [here.](https://mystrom.ch/wp-content/uploads/REST_API_WBS.txt "myStrom Button+")

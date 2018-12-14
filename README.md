@@ -12,6 +12,7 @@
 - Status message of how the message was sent
 - Status if message has arrived at destination (TODO)
 - Graphical color picker for lights (TODO)
+- - Control almost any device with dingz!
 
 ### Installation
 
@@ -27,17 +28,21 @@ Please report all bugs through the Github issues page. Your help is greatly appr
 
 ### Nodes
 
-- [myStrom Switch](#mystrom-switch)
-- [myStrom Bulb](#mystrom-bulb)
-- [myStrom Light Strip](#mystrom-light-strip)
-- [myStrom Button](#mystrom-button)
-- [myStrom Button+](#mystrom-buttonplus)
+- myStrom Switch
+- myStrom Bulb
+- myStrom Light Strip
+- myStrom Button
+- myStrom Button+
+
+---
 
 ### General usage
 
 Usage:
 
-1.  Select the device in the properties of the node. If a switch has been detected you can automatically select it, otherwise you can manually specify a mac and ip address.
+1.  Select the device in the properties of the node. To do this simply click on the node and a new menu will pop up. From there you can either:
+    - Select an already configured device.
+    - Create a new device. If you choose to create a new device, you can either specify this device by providing an IP and MAC address. You can also use the "discovered devices" dropdown to select a device that has automatically discovered in your network.
 2.  Specify which action should be executed when the node is triggered.
 3.  The node will be triggered once it receives any kind of input.
 
