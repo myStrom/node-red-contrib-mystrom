@@ -53,9 +53,8 @@ Usage:
 1.  Make sure your devices are in the configuration mode.
     - Button: Connect the button to a power source with the provided USB cable. After some minutes it should become visible in the network
     - Button+: Open the back of the button up by turning it. Remove the batteries and reinsert them. The button should now be visible.
-2.  Select whether you want to specify the button actions or get information about the button by using the dropdown menu in the node properties.
-3.  Specify the ip address and data you would like to send. If you only want use the button nodes output enter "wire" in the address field and leave the data field blank.
-4.  Connect your other nodes and services you would like to trigger to the nodes outputs. Keep in mind that the first node output port is reserved for the "report" action and will only receive data if you have specified "report" as your request.
-5.  Press the button on the left side of the button node to upload your configuration to the button. You only need to reupload the data if you have changed something within the button node. If you change what you have attached to the output ports or connect/disconnect nodes from these ports, you do not have to upload it again.
+2.  Specify the ip address and data you would like to send. If you only want use the button nodes output enter "wire" in the address field and leave the data field blank.
+3.  Connect your other nodes and services you would like to trigger to the nodes outputs.
+4.  Press the button on the left side of the button node to upload your configuration to the button. You only need to reupload the data if you have changed something within the button node. If you change what you have attached to the output ports or connect/disconnect nodes from these ports, you do not have to upload it again.
 
 For an advanced user guide on how to use the myStrom nodes see [here](ADVANCED.md)

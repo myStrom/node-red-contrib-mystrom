@@ -159,4 +159,4 @@ Once the buttons have been configured you do not need to re-upload to the button
 
 ![](misc/output-highlight.png)
 
-If the address of a button action is set to 'wire' the outputs of the button node will output the message 'success'. The first node output however is always reserved for the 'report' action. This means that, if the 'Single click' address is set to 'wire', the second output will get the message 'success'. For 'Double click' the third output will get it, for 'Long click' the forth and for 'Touch' the fifth.
+If the address of a button action is set to 'wire' the outputs of the button node will output the interaction type (e.g. "double" for double click). If you have checkd the box "Enable advanced configuration", you can further manually specify where you would like to send the the request and with which data as payload. If you leave the data field empty and enter "wire" in the address field you will be using the output ports again.

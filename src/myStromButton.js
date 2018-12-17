@@ -21,19 +21,19 @@ module.exports = function(RED) {
         request: config.request,
         data: {
           single: {
-            url: config.singleURL,
+            url: config.advanced ? config.singleURL : "wire",
             "url-data": config.singleData
           },
           double: {
-            url: config.doubleURL,
+            url: config.advanced ? config.doubleURL : "wire",
             "url-data": config.doubleData
           },
           long: {
-            url: config.longURL,
+            url: config.advanced ? config.longURL : "wire",
             "url-data": config.longData
           },
           touch: {
-            url: config.touchURL,
+            url: config.advanced ? config.touchURL : "wire",
             "url-data": config.touchData
           }
         }

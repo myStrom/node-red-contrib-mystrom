@@ -21,10 +21,22 @@ module.exports = function(RED) {
         mac: this.device.mac,
         request: config.request,
         data: {
-          single: { url: config.singleURL, "url-data": config.singleData },
-          double: { url: config.doubleURL, "url-data": config.doubleData },
-          long: { url: config.longURL, "url-data": config.longData },
-          touch: { url: config.touchURL, "url-data": config.touchData }
+          single: {
+            url: config.advanced ? config.singleURL : "wire",
+            "url-data": config.singleData
+          },
+          double: {
+            url: config.advanced ? config.doubleURL : "wire",
+            "url-data": config.doubleData
+          },
+          long: {
+            url: config.advanced ? config.longURL : "wire",
+            "url-data": config.longData
+          },
+          touch: {
+            url: config.advanced ? config.touchURL : "wire",
+            "url-data": config.touchData
+          }
         }
       };
 

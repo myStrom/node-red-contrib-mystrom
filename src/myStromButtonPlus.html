@@ -18,6 +18,9 @@
       urlOffset: {
         value: ""
       },
+      advanced: {
+        value: false
+      },
       singleURL: {
         value: ""
       },
@@ -50,6 +53,18 @@
     icon: "myStrom-ButtonPlus.png",
     label: function() {
       return this.name || "myStrom Button Plus";
+    },
+    oneditprepare: function() {
+      //Overall
+      $('#node-input-advanced').change(function() {
+        if (this.checked) {
+          $('#node-input-advanced-config').show()
+        } else {
+          $('#node-input-advanced-config').hide()
+        }
+
+        $('#node-input-advanced').val(this.checked);
+      });
     },
     button: {
       enabled: function() {
@@ -105,13 +120,7 @@
     <input id="node-input-device">
   </div>
 
-  <!--
-  <div class="form-row">
-    <label for="node-input-request"><i class="fa fa-paper-plane"></i>Request</label>  <select type="text" id="node-input-request" onchange="requestChange(value)">
-      <option value="set">Set button action</option>
 
-    </select>
-   </div>-->
 
   <div class="form-row">
     <label for="node-input-urlOffset"><i class="fa fa-arrows-h"></i>Offset</label>
@@ -121,62 +130,71 @@
   </div>
   </div>
 
-  <h4> Single Click</h4>
+
   <div class="form-row">
-    <div class="inline">
-      <div>
-        Data:
-        <input type="text" id="node-input-singleData" placeholder="key=value&...">
+    <label for="node-input-advanced"><i class="fa fa-cog"></i> <span>Config</span></label>
+    <label for="node-input-advanced" style="width:70%">
+            <input type="checkbox" id="node-input-advanced" style="display:inline-block; width:22px; vertical-align:baseline;"/><span>Enable advanced configuration</span>
+        </label>
+  </div>
+
+  <div id="node-input-advanced-config">
+    <h4> Single Click</h4>
+    <div class="form-row">
+      <div class="inline">
+        <div>
+          Data:
+          <input type="text" id="node-input-singleData" placeholder="key=value&...">
+        </div>
+        <div>
+          Address:
+          <input type="text" id="node-input-singleURL" placeholder="192.168..../wire" style="padding-left:10px">
+        </div>
       </div>
-      <div>
-        Address:
-        <input type="text" id="node-input-singleURL" placeholder="192.168..../wire" style="padding-left:10px">
+    </div>
+
+    <h4> Double Click</h4>
+    <div class="form-row">
+      <div class="inline">
+        <div>
+          Data:
+          <input type="text" id="node-input-doubleData" placeholder="key=value&...">
+        </div>
+        <div>
+          Address:
+          <input type="text" id="node-input-doubleURL" placeholder="192.168..../wire" style="padding-left:10px">
+        </div>
+      </div>
+    </div>
+
+    <h4> Long Click</h4>
+    <div class="form-row">
+      <div class="inline">
+        <div>
+          Data:
+          <input type="text" id="node-input-longData" placeholder="key=value&...">
+        </div>
+        <div>
+          Address:
+          <input type="text" id="node-input-longURL" placeholder="192.168..../wire" style="padding-left:10px">
+        </div>
+      </div>
+    </div>
+
+    <h4> Touch</h4>
+    <div class="form-row">
+      <div class="inline">
+        <div>
+          Data:
+          <input type="text" id="node-input-touchData" placeholder="key=value&...">
+        </div>
+        <div>
+          Address:
+          <input type="text" id="node-input-touchURL" placeholder="192.168..../wire" style="padding-left:10px">
+        </div>
       </div>
     </div>
   </div>
-
-  <h4> Double Click</h4>
-  <div class="form-row">
-    <div class="inline">
-      <div>
-        Data:
-        <input type="text" id="node-input-doubleData" placeholder="key=value&...">
-      </div>
-      <div>
-        Address:
-        <input type="text" id="node-input-doubleURL" placeholder="192.168..../wire" style="padding-left:10px">
-      </div>
-    </div>
-  </div>
-
-  <h4> Long Click</h4>
-  <div class="form-row">
-    <div class="inline">
-      <div>
-        Data:
-        <input type="text" id="node-input-longData" placeholder="key=value&...">
-      </div>
-      <div>
-        Address:
-        <input type="text" id="node-input-longURL" placeholder="192.168..../wire" style="padding-left:10px">
-      </div>
-    </div>
-  </div>
-
-  <h4> Touch</h4>
-  <div class="form-row">
-    <div class="inline">
-      <div>
-        Data:
-        <input type="text" id="node-input-touchData" placeholder="key=value&...">
-      </div>
-      <div>
-        Address:
-        <input type="text" id="node-input-touchURL" placeholder="192.168..../wire" style="padding-left:10px">
-      </div>
-    </div>
-  </div>
-
 
 
 </script>
