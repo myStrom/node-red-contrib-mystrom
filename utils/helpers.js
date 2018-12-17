@@ -211,6 +211,7 @@ module.exports = {
       }
     } else if (type == "buttonplus" || type == "button") {
       if (request == "report") {
+        console.log("REPORTING");
         //NO DATA SENT
         resolvedPath += "/api/v1/device/" + formatMac(mac);
       } else if (request == "set") {

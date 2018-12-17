@@ -32,7 +32,7 @@ module.exports = function(RED) {
         taskJSON.data["urlOffset"] = config.urlOffset;
       }
 
-      this.status({ fill: "yellow", shape: "ring", text: "Using property" });
+      // this.status({ fill: "yellow", shape: "ring", text: "Using property" });
 
       if (!requests.isValid(taskJSON, this.DEVICE_TYPE)) {
         node.error("Conversion from property to json failed");
@@ -48,11 +48,11 @@ module.exports = function(RED) {
     function back(str) {
       if (str["success"] == "false") {
         node.error("An error occured while sending");
-        this.status({
+        /*  this.status({
           fill: "red",
           shape: "ring",
           text: this.DEVICE_TYPE + " unreachable"
-        });
+        });*/
       }
       node.send({ payload: str });
     }

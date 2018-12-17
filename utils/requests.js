@@ -179,11 +179,11 @@ module.exports = {
           button.actions[req.action] &&
           button.mac == req.mac
         ) {
-          var messages = new Array(buttonActions.length + 1).fill(null);
-          var index = parseInt(req.action) + 1;
+          var messages = new Array(buttonActions.length).fill(null);
+          var index = parseInt(req.action);
 
           messages[index] = {
-            payload: true
+            payload: buttonActions[req.action]
           };
 
           var node = helpers.getNodeForMac()[req.mac];
