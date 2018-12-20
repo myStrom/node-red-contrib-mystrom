@@ -12,7 +12,6 @@
 - Status message of how the message was sent
 - Status if message has arrived at destination (TODO)
 - Graphical color picker for lights (TODO)
-- - Control almost any device with dingz!
 
 ### Installation
 
@@ -52,8 +51,8 @@ Usage:
 
 1.  Make sure your devices are in the configuration mode.
     - Button: Connect the button to a power source with the provided USB cable. After some minutes it should become visible in the network
-    - Button+: Open the back of the button up by turning it. Remove the batteries and reinsert them. The button should now be visible.
-2.  Specify the ip address and data you would like to send. If you only want use the button nodes output enter "wire" in the address field and leave the data field blank.
+    - Button+: Open the back of the button up by rotating it clockwise. Remove the batteries and reinsert them. The button should now be visible to the network.
+2.  Specify the ip address and data you would like to send. For more control over what/where we send the request to see the advanced guide.
 3.  Connect your other nodes and services you would like to trigger to the nodes outputs.
 4.  Press the button on the left side of the button node to upload your configuration to the button. You only need to reupload the data if you have changed something within the button node. If you change what you have attached to the output ports or connect/disconnect nodes from these ports, you do not have to upload it again.
 
