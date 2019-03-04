@@ -22,6 +22,7 @@ myStrom-Node-RED was written in **Node.js** v4.2.6 and tested on Node-RED v0.19.
 To use it execute `npm install node-red-contrib-mystrom` or use the node-RED interface by accessing Node-RED web ui -> top right menu -> "manage palette"->"install"-> serach for "node-red-contrib-mystrom"
 
 ### Bugs
+The skill does not work if your node-red instance is running over https.
 
 Please report all bugs through the Github issues page. Your help is greatly appreciated.
 
